@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/identityFragment">
+
+
+    <fragment
+        android:id="@+id/identityFragment"
+        android:name="com.acoustic.connect.android.demo.connect.external.identity.IdentityFragment"
+        android:label="Identity" />
+
+    <fragment
+        android:id="@+id/gesturesFragment"
+        android:name="com.acoustic.connect.android.demo.connect.external.gestures.GesturesFragment"
+        android:label="Gestures" />
+
+    <fragment
+        android:id="@+id/appStateFragment"
+        android:name="com.acoustic.connect.android.demo.connect.external.appstate.AppStateFragment"
+        android:label="App state" />
+
+</navigation>

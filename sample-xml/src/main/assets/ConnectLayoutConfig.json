@@ -1,0 +1,55 @@
+{
+  "AutoLayout": {
+    "GlobalScreenSettings": {
+      "ScreenChange": true,
+      "DisplayName": "",
+      "CaptureLayoutDelay": 500,
+      "ScreenShot": true,
+      "NumberOfWebViews": 0,
+      "CaptureUserEvents": true,
+      "CaptureScreenVisits": true,
+      "CaptureLayoutOn": 2,
+      "CaptureScreenshotOn": 2,
+      "Masking": {
+        "HasMasking": true,
+        "HasCustomMask": false,
+        "Sensitive": {
+          "capitalCaseAlphabet": "X",
+          "number": "9",
+          "smallCaseAlphabet": "x",
+          "symbol": "#"
+        },
+        "MaskIdList": [],
+        "MaskValueList": [],
+        "MaskAccessibilityLabelList": []
+      }
+    },
+    "MainActivity": {
+      "ScreenChange": false,
+      "DisplayName": "MainActivity",
+      "CaptureLayoutOn": 0,
+      "CaptureScreenshotOn": 0
+    },
+    "IdentityFragment": {
+      "ScreenChange": true,
+      "DisplayName": "identity_screen",
+      "CaptureLayoutOn": 2,
+      "CaptureScreenshotOn": 2,
+      "Masking": {
+        "HasMasking": true,
+        "HasCustomMask": false,
+        "Sensitive": {
+          "capitalCaseAlphabet": "X",
+          "number": "9",
+          "smallCaseAlphabet": "x",
+          "symbol": "#"
+        },
+        "MaskIdList": [
+          "com.acoustic.connect.android.demo.connect.external.xml:id/et_identifier_value"
+        ],
+        "MaskValueList": [],
+        "MaskAccessibilityLabelList": []
+      }
+    }
+  }
+}

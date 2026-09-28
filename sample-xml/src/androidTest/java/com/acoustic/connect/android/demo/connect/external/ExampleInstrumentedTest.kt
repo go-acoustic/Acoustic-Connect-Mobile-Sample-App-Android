@@ -1,0 +1,26 @@
+package com.acoustic.connect.android.demo.connect.external
+
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.ext.junit.runners.AndroidJUnit4
+
+import org.junit.Test
+import org.junit.runner.RunWith
+
+import org.junit.Assert.*
+
+/**
+ * Instrumented test, which will execute on an Android device.
+ *
+ * See [testing documentation](http://d.android.com/tools/testing).
+ */
+@RunWith(AndroidJUnit4::class)
+class ExampleInstrumentedTest {
+    @Test
+    fun useAppContext() {
+        // Context of the app under test.
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        // The .xml suffix is this app's applicationId, which is what packageName returns.
+        // sample-compose keeps the unsuffixed id so its Firebase registration still matches.
+        assertEquals("com.acoustic.connect.android.demo.connect.external.xml", appContext.packageName)
+    }
+}

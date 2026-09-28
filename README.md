@@ -1,8 +1,25 @@
-# Acoustic Connect Push Sample App — Android
+# Acoustic Connect Sample App — Android
 
-Jetpack Compose sample app demonstrating mobile push notification integration with the Acoustic Connect Android SDK.
+Two sample apps for the Acoustic Connect Android SDK, in one Gradle project, sharing one copy of
+their non-UI code.
 
-Use this alongside the Integration Guide to see a working implementation of push registration, notification handling, and identity logging across both FCM (Firebase) and HMS (Huawei) providers.
+| Module | UI toolkit | Covers | SDK artifact |
+|---|---|---|---|
+| `sample-compose` | Jetpack Compose | Push, identity, gestures, app state | `connect-push` |
+| `sample-xml` | Views / XML layouts | Identity, gestures, app state — **no push** | `connect` |
+
+The second app exists to cover what actually differs between the two UI toolkits: screen-view
+emission, control capture and masking all take different routes through the SDK. Push does not —
+it is independent of the UI layer — so duplicating the certificates, provider registrations and
+config files it needs would add maintenance without adding coverage. `sample-xml` is therefore
+analytics-only and needs no Firebase or AppGallery account to build and run.
+
+Everything that is not UI — credential loading, the signal log, app-state instrumentation, the
+identity view model and the swipe classifier — lives in `shared/` and is compiled into both apps.
+Read either app to learn the integration; read both to see what changes with the UI toolkit.
+
+Use this alongside the Integration Guide to see a working implementation of push registration,
+notification handling, and identity logging across both FCM (Firebase) and HMS (Huawei) providers.
 
 ---
 
@@ -69,8 +86,8 @@ The quick-start steps below assume you have completed the prerequisites in the g
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/go-acoustic/Acoustic-Connect-Mobile-Push-Sample-App-Android.git
-cd Acoustic-Connect-Mobile-Push-Sample-App-Android
+git clone https://github.com/go-acoustic/Acoustic-Connect-Mobile-Sample-App-Android.git
+cd Acoustic-Connect-Mobile-Sample-App-Android
 ```
 
 ### 2. Open in Android Studio
@@ -79,7 +96,8 @@ Open the project root in Android Studio. Gradle will sync and resolve all depend
 
 ### 3. Add push provider configuration files
 
-Place your provider config files in the `app/` directory before building:
+Only `sample-compose` needs these — `sample-xml` builds and runs without them. Place your
+provider config files in the `sample-compose/` directory before building:
 
 | File | Provider | Where to obtain |
 |---|---|---|
@@ -90,14 +108,17 @@ Place your provider config files in the `app/` directory before building:
 
 ### 4. Configure your credentials
 
-The app reads its Acoustic **app key** and **collector URL** from a single asset file, `app/src/main/assets/ConnectBasicConfig.properties`. This is the only file you need to edit — both code paths in the app resolve credentials from it:
+Both apps read their Acoustic **app key** and **collector URL** from a single asset file,
+`shared/src/main/assets/ConnectBasicConfig.properties`. It lives in the shared module, so editing
+it once configures both apps. This is the only file you need to edit — every code path resolves
+credentials from it:
 
 | Code path | When it runs | How it reads the asset |
 |---|---|---|
 | Foreground init | User opens the app — `MainActivity` calls `ConnectComposeUI.ConnectWrapper(...)` | `AcousticCredentials.load(context)` parses the asset and passes `appKey` / `postMessageURL` into the wrapper |
 | Background init | FCM/HMS delivers a push while the app is not running — SDK bootstraps to log `pushReceived` before `MainActivity` runs | The Connect SDK loads `ConnectBasicConfig.properties` directly (`Background bootstrap: no persisted credentials, using bundled config`) |
 
-Open `app/src/main/assets/ConnectBasicConfig.properties` and set:
+Open `shared/src/main/assets/ConnectBasicConfig.properties` and set:
 
 ```properties
 # your Acoustic collector URL
@@ -157,11 +178,19 @@ keytool -list -v \
   -keypass android
 ```
 
-Copy the **SHA-256** value and add it in AppGallery Connect → My apps → General information → SHA-256 certificate fingerprint. Then re-download `agconnect-services.json` and replace the file in `app/`.
+Copy the **SHA-256** value and add it in AppGallery Connect → My apps → General information → SHA-256 certificate fingerprint. Then re-download `agconnect-services.json` and replace the file in `sample-compose/`.
 
 ### 6. Build and run
 
-Select the `app` run configuration and run on a device or emulator.
+Select the `sample-compose` or `sample-xml` run configuration and run on a device or emulator, or
+from the command line:
+
+```bash
+./gradlew :sample-compose:assembleDebug     # push + analytics
+./gradlew :sample-xml:assembleDebug         # analytics only, no provider config needed
+```
+
+The two apps have different application ids, so both can be installed side by side.
 
 - **FCM** — works on any device with Google Play Services
 - **HMS** — works on Huawei devices or emulators with HMS Core
@@ -171,27 +200,47 @@ Select the `app` run configuration and run on a device or emulator.
 ## Project structure
 
 ```
-app/
+settings.gradle.kts                   # :shared, :sample-compose, :sample-xml
+gradle/libs.versions.toml             # one version catalog; connectSdk pins every Acoustic artifact
+
+shared/                               # UI-free, compiled into BOTH apps
+  src/main/assets/
+    ConnectBasicConfig.properties     # AppKey + PostMessageUrl — single source of truth
+    ConnectAdvancedConfig.json        # SDK feature switches
+  src/main/java/.../
+    AcousticCredentials.kt            # Thin loader that reads ConnectBasicConfig.properties
+    analytics/SignalLog.kt            # In-memory record of what the app emitted
+    analytics/AppStateSignals.kt      # Foreground/background + orientation custom events
+    identity/IdentityViewModel.kt     # logIdentificationEvent, history (last 5)
+    gestures/SwipeName.kt             # Swipe-direction classifier
+
+sample-compose/                       # Compose app: push + analytics
   google-services.json                # Firebase config (add your own — not in repo)
   agconnect-services.json             # Huawei AppGallery Connect config (replace with yours)
   src/main/
-    assets/
-      ConnectBasicConfig.properties   # AppKey + PostMessageUrl — single source of truth
+    assets/ConnectLayoutConfig.json   # Per-screen capture and masking rules
     java/.../
-      AcousticCredentials.kt          # Thin loader that reads ConnectBasicConfig.properties
       MainActivity.kt                 # SDK init, ConnectWrapper, push config
-      MainScreen.kt                   # Bottom navigation (Notification / Identity tabs)
-      notification/
-        NotificationScreen.kt         # Push authorization UI, token display
-        NotificationViewModel.kt      # Token fetch, notification permission handling
-      identity/
-        IdentityScreen.kt             # Identity logging UI
-        IdentityViewModel.kt          # logIdentificationEvent, history (last 5)
-      ui/theme/
-        Color.kt                      # Acoustic brand colours
-        Theme.kt                      # Material3 theme
-        Type.kt                       # Typography
+      MainScreen.kt                   # Bottom navigation
+      notification/                   # Push authorization UI, token display, permission handling
+      identity/IdentityScreen.kt      # Identity logging UI
+      appstate/AppStateScreen.kt      # Session / logical page / signal log
+      gestures/GestureScreen.kt       # Gesture capture targets
+      analytics/ScreenviewEffects.kt  # Compose screen-view emission
+      ui/theme/                       # Acoustic brand colours, Material3 theme, typography
     AndroidManifest.xml               # INTERNET, NETWORK_STATE, POST_NOTIFICATIONS
+
+sample-xml/                           # Views app: analytics only, no push
+  src/main/
+    assets/ConnectLayoutConfig.json   # Per-screen capture and masking rules
+    java/.../
+      MainActivity.kt                 # Connect.init + Connect.enable, no ConnectPushConfig
+      identity/IdentityFragment.kt    # Identity logging UI
+      appstate/AppStateFragment.kt    # Session / logical page / signal log
+      gestures/GesturesFragment.kt    # Gesture capture targets
+    res/layout/                       # Fragment layouts
+    res/navigation/nav_graph.xml      # Identity / Gestures / App state
+    AndroidManifest.xml               # INTERNET, NETWORK_STATE — no POST_NOTIFICATIONS
 ```
 
 ---
@@ -513,6 +562,10 @@ ConnectPushConfig(
 
 Use `connect` when you only need analytics capture and do not want to register for push. No push plugins, no push config files, no `ConnectPushConfig`.
 
+> **`sample-xml` in this repo is exactly this setup**, already wired up. If you want a working
+> reference rather than a recipe, read `sample-xml/build.gradle.kts` and
+> `sample-xml/src/main/java/.../MainActivity.kt` instead of following the steps below.
+
 ### 1. `settings.gradle.kts`
 
 ```kotlin
@@ -590,7 +643,7 @@ The SDK captures user interactions, screen visits, and screenshots automatically
 |---|---|---|
 | `907135700: get scope error` | Push Kit not enabled in AppGallery Connect | Enable Push Kit: My apps → Develop → APIs enabled |
 | `907135702: certificate fingerprint empty` | SHA-256 not registered in AppGallery Connect | Add fingerprint and re-download `agconnect-services.json` |
-| `Failed to resolve: com.google.firebase:firebase-messaging:null` | `google-services.json` missing | Add your `google-services.json` to the `app/` directory |
+| `Failed to resolve: com.google.firebase:firebase-messaging:null` | `google-services.json` missing | Add your `google-services.json` to the `sample-compose/` directory |
 | Push token never arrives | Notification permission denied (Android 13+) | Grant `POST_NOTIFICATIONS` permission when prompted |
 | Push sent from dashboard but app receives nothing | Identity signal not yet flushed to collector when push was dispatched | Wait for the identity signal collector POST to return HTTP 200 (visible in logcat) before sending the push — the SDK flushes on a ~30s interval; a network interruption can delay the flush further |
 
