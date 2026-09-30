@@ -44,9 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedText
 import com.acoustic.connect.android.demo.connect.external.R
 import com.acoustic.connect.android.demo.connect.external.analytics.ScreenviewUnloadEffect
-
-/** Logical page name — kept identical to the XML sample app so signals are directly comparable. */
-private const val SCREEN_NAME = "gestures_screen"
+import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
 
 private const val LIST_ROWS = 40
 private const val MIN_ZOOM = 0.5f
@@ -72,7 +70,7 @@ fun GestureScreen() {
     var lastGesture by remember { mutableStateOf("none") }
     var zoom by remember { mutableFloatStateOf(1f) }
 
-    ScreenviewUnloadEffect(SCREEN_NAME)
+    ScreenviewUnloadEffect(ScreenName.GESTURES)
 
     Column(
         modifier = Modifier

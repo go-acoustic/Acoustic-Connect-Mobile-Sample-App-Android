@@ -1,15 +1,8 @@
 <resources>
     <string name="app_name">Connect Application</string>
     <string name="tab_identity">Identity</string>
+    <string name="tab_behaviour">Behaviour</string>
     <string name="logo_description">Acoustic Connect Logo</string>
-    <string name="connect_demo">Connect Demo</string>
-    <string name="log_identity">Log Identity</string>
-    <string name="identifier_name">Identifier Name</string>
-    <string name="identifier_name_hint">e.g. Email</string>
-    <string name="identifier_value">Identifier Value</string>
-    <string name="identifier_value_hint">e.g. user@example.com</string>
-    <string name="send_identity_signal">Send Identity Signal</string>
-    <string name="recent">Recent</string>
     <string name="tab_gestures">Gestures</string>
     <string name="gestures_last_none">Last gesture: none</string>
     <string name="gestures_last">Last gesture: %1$s</string>
@@ -29,4 +22,15 @@
     <string name="app_state_accepted">accepted</string>
     <string name="app_state_rejected">rejected</string>
     <string name="app_state_not_sent">not sent</string>
+
+    <!--
+      Showcase lines that depend on how the Views integration captures things. The Compose sample
+      defines the same names with its own wording; everything else is in the shared module.
+    -->
+    <string name="showcase_read_capture">The first three cards need no extra call: the SDK captures taps and text from the views themselves, and each screen logs its own screen view as it opens.</string>
+    <string name="showcase_screen_views_body">Each screen here logs a screen view with logScreenview when its view is created. The name is the screen\'s own, and the referrer is the screen you came from.</string>
+    <string name="showcase_taps_body">Every touch is logged as a click event: MainActivity forwards touches to the SDK through dispatchTouchEvent. Nothing to call — tap the button and look for the click event in the next post. The control id is the view\'s resource id.</string>
+    <string name="showcase_taps_result">taps: %1$d · control id: %2$s</string>
+    <string name="showcase_text_body">Typing into a field logs a text-change event and the value appears in the captured layout. A value matching a masking rule in ConnectLayoutConfig.json is redacted before it leaves the device.</string>
+    <string name="showcase_text_hint">The sample config masks values starting with SECRET- (MaskValueList): capitals become X, lowercase x, digits 9, symbols #. Compare the two fields in the posted layout message.</string>
 </resources>

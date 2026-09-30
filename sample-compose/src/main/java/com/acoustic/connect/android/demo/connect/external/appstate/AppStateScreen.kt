@@ -38,6 +38,7 @@ import com.acoustic.connect.android.connectmod.Connect
 import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedButton
 import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedText
 import com.acoustic.connect.android.demo.connect.external.analytics.ScreenviewUnloadEffect
+import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
 import com.acoustic.connect.android.demo.connect.external.analytics.SignalLog
 import com.acoustic.connect.android.demo.connect.external.analytics.currentLogicalPageName
 import com.acoustic.connect.android.demo.connect.external.analytics.currentSessionId
@@ -45,9 +46,6 @@ import com.acoustic.connect.android.demo.connect.external.ui.theme.LightCard
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
-/** Logical page name — kept identical to the XML sample app so signals are directly comparable. */
-private const val SCREEN_NAME = "app_state_screen"
 
 private const val EVENT_SESSION_START = "sessionStart"
 
@@ -79,7 +77,7 @@ fun AppStateScreen(modifier: Modifier = Modifier) {
         logicalPage = currentLogicalPageName()
     }
 
-    ScreenviewUnloadEffect(SCREEN_NAME)
+    ScreenviewUnloadEffect(ScreenName.APP_STATE)
 
     LifecycleResumeEffect(Unit) {
         refresh()

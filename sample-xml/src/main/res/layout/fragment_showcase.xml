@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Card order follows the React Native Showcase; Gestures and App state are the Android additions.
+  Result lines start hidden and appear once their card has been driven, as in React Native.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Demo.Screen">
+
+    <LinearLayout style="@style/Demo.Column">
+
+        <include layout="@layout/view_logo_header" />
+
+        <!-- How to read the results -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_read_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_read_body" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_read_capture" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Screen views -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_screen_views_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_screen_views_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_showcase_open_detail"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_open_detail" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Taps -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_taps_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_taps_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_showcase_tap"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_tap_me" />
+                <TextView android:id="@+id/txt_showcase_taps" style="@style/Demo.Text.Mono" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Gestures (Android) -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_gestures_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_gestures_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_gestures"
+                    style="@style/Demo.Button.Secondary"
+                    android:text="@string/showcase_open_gestures" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Text entry and masking -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_text_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_text_body" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView style="@style/Demo.Text.Label" android:text="@string/showcase_plain_field" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Demo.Field"
+                        android:layout_marginTop="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/field_showcase_note"
+                            style="@style/Demo.FieldInput"
+                            android:hint="@string/showcase_plain_placeholder" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView style="@style/Demo.Text.Label" android:text="@string/showcase_masked_field" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Demo.Field"
+                        android:layout_marginTop="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/field_showcase_secret"
+                            style="@style/Demo.FieldInput"
+                            android:hint="@string/showcase_masked_placeholder" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <LinearLayout style="@style/Demo.NoteBox">
+                    <TextView style="@style/Demo.Text.Hint" android:text="@string/showcase_text_hint" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Custom event -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_custom_event_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_custom_event_body" />
+                <LinearLayout style="@style/Demo.NoteBox">
+                    <TextView android:id="@+id/custom_event_payload" style="@style/Demo.Text.Mono" />
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_send_custom_event"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_send_custom_event" />
+                <TextView
+                    android:id="@+id/txt_custom_event_result"
+                    style="@style/Demo.Text.Mono"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Log Signal -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_signal_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_signal_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_send_nested_signal"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_send_nested_signal" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_send_flat_signal"
+                    style="@style/Demo.Button.Secondary"
+                    android:text="@string/showcase_send_flat_signal" />
+                <LinearLayout
+                    android:id="@+id/signal_result_box"
+                    style="@style/Demo.NoteBox"
+                    android:visibility="gone">
+                    <TextView android:id="@+id/txt_signal_result" style="@style/Demo.Text.Mono" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Exceptions -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_exception_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_exception_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_showcase_exception"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_log_exception" />
+                <TextView
+                    android:id="@+id/txt_showcase_exception_result"
+                    style="@style/Demo.Text.Mono"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Dialogs -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_dialog_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_dialog_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_showcase_dialog"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_show_dialog" />
+                <TextView
+                    android:id="@+id/txt_showcase_dialog_result"
+                    style="@style/Demo.Text.Mono"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Modal (opaque) -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_modal_opaque_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_modal_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_replay_modal_opaque"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_open_modal" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Modal (transparent) -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_modal_transparent_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_modal_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_replay_modal_transparent"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_open_modal" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- App state (Android) -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_app_state_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_app_state_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_app_state"
+                    style="@style/Demo.Button.Secondary"
+                    android:text="@string/showcase_open_app_state" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Runtime capture control -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_capture_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_capture_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_capture_disable"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_capture_disable" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_capture_enable"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/showcase_capture_enable" />
+                <TextView
+                    android:id="@+id/txt_capture_state"
+                    style="@style/Demo.Text.Mono"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

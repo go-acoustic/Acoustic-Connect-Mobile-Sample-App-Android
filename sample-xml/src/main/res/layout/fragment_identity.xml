@@ -2,170 +2,114 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:fillViewport="true">
+    style="@style/Demo.Screen">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="40dp"
-        android:paddingBottom="40dp"
-        android:gravity="center_horizontal">
+    <LinearLayout style="@style/Demo.Column">
 
-        <ImageView
-            android:id="@+id/iv_logo"
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/acoustic_logo_light"
-            android:contentDescription="@string/logo_description"
-            android:adjustViewBounds="true" />
+        <include layout="@layout/view_logo_header" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/connect_demo"
-            android:textSize="@dimen/text_medium"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textStyle="bold" />
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_last_result"
+            style="@style/Demo.Card"
+            android:visibility="gone">
 
-        <!-- Identity Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/light_card"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+            <LinearLayout style="@style/Demo.CardBody">
 
                 <TextView
-                    android:id="@+id/tv_log_identity_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/log_identity"
-                    android:textSize="@dimen/text_medium"
-                    android:textStyle="bold"
-                    android:textAppearance="?attr/textAppearanceBodyLarge" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:textSize="@dimen/text_small"
-                    android:text="@string/identifier_name"
-                    android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:hintEnabled="false"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_identifier_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text|textNoSuggestions"
-                        android:imeOptions="actionNext"
-                        android:hint="@string/identifier_name_hint" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:textSize="@dimen/text_small"
-                    android:text="@string/identifier_value"
-                    android:textAppearance="?attr/textAppearanceBodySmall" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:hintEnabled="false"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/et_identifier_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text|textNoSuggestions"
-                        android:imeOptions="actionDone"
-                        android:hint="@string/identifier_value_hint" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/btn_send_identity_signal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/send_identity_signal"
-                    android:backgroundTint="@color/acoustic_button_tint"
-                    android:textColor="@android:color/white" />
+                    style="@style/Demo.Text.CardTitle"
+                    android:text="@string/identity_last_result" />
 
                 <TextView
                     android:id="@+id/tv_identity_status_message"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textSize="@dimen/text_small"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:visibility="gone" />
-
+                    style="@style/Demo.Text.Body"
+                    android:textSize="14sp" />
             </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-        </androidx.cardview.widget.CardView>
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
 
-        <!-- History Card -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_history"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:visibility="gone"
-            app:cardCornerRadius="16dp"
-            app:cardBackgroundColor="@color/light_card"
-            app:cardElevation="0dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+            <LinearLayout style="@style/Demo.CardBody">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_log_identity_title"
+                    style="@style/Demo.Text.CardTitle"
+                    android:text="@string/identity_log_title" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/recent"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/text_small"
-                    android:textAppearance="?attr/textAppearanceBodyLarge" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Demo.Text.Label"
+                        android:text="@string/identity_name_label" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Demo.Field"
+                        android:layout_marginTop="4dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_identifier_name"
+                            style="@style/Demo.FieldInput"
+                            android:hint="@string/identity_name_placeholder"
+                            android:imeOptions="actionNext" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Demo.Text.Label"
+                        android:text="@string/identity_value_label" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Demo.Field"
+                        android:layout_marginTop="4dp">
+
+                        <!-- Masked by id in ConnectLayoutConfig.json (IdentityFragment). -->
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_identifier_value"
+                            style="@style/Demo.FieldInput"
+                            android:hint="@string/identity_value_placeholder"
+                            android:imeOptions="actionDone" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_send_identity_signal"
+                    style="@style/Demo.Button.Primary"
+                    android:enabled="false"
+                    android:text="@string/identity_log_logged_in" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_send_account_registered_signal"
+                    style="@style/Demo.Button.Primary"
+                    android:enabled="false"
+                    android:text="@string/identity_log_registered" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_history"
+            style="@style/Demo.Card"
+            android:visibility="gone">
+
+            <LinearLayout style="@style/Demo.CardBody">
+
+                <TextView
+                    style="@style/Demo.Text.CardTitle"
+                    android:text="@string/identity_recent" />
 
                 <LinearLayout
                     android:id="@+id/ll_history_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:orientation="vertical" />
-
             </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
-
 </ScrollView>

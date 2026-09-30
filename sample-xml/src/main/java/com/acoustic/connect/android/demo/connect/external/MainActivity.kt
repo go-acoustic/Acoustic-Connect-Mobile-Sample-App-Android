@@ -13,8 +13,10 @@ import android.os.Bundle
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.acoustic.connect.android.connectmod.Connect
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 /**
@@ -48,8 +50,16 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
+        // The two tab roots show no back arrow; everything stacked on the Behaviour hub does.
+        val topLevel = AppBarConfiguration(setOf(R.id.tab_identity, R.id.behaviourFragment))
+        findViewById<MaterialToolbar>(R.id.toolbar).setupWithNavController(navController, topLevel)
+
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
         bottomNav.setupWithNavController(navController)
+        // Like React Navigation's bottom tabs: pressing the tab you are on pops it to its root.
+        bottomNav.setOnItemReselectedListener { item ->
+            if (item.itemId == R.id.tab_behaviour) navController.popBackStack(R.id.behaviourFragment, false)
+        }
     }
 
     override fun dispatchTouchEvent(e: MotionEvent?): Boolean {

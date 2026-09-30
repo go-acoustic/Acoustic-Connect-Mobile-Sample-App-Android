@@ -9,129 +9,188 @@
  */
 package com.acoustic.connect.android.demo.connect.external
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Insights
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.navigation
 import com.acoustic.connect.android.demo.connect.external.appstate.AppStateScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.BehaviourScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.ShowcaseDetailScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.ShowcaseScreen
+import com.acoustic.connect.android.demo.connect.external.contract.SampleId
+import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
 import com.acoustic.connect.android.demo.connect.external.gestures.GestureScreen
 import com.acoustic.connect.android.demo.connect.external.identity.IdentityScreen
 import com.acoustic.connect.android.demo.connect.external.notification.NotificationScreen
 import com.acoustic.connect.android.demo.connect.external.notification.NotificationViewModel
-import com.acoustic.connect.android.demo.connect.external.ui.theme.AcousticPurple
-
-private const val ROUTE_NOTIFICATION = "notification_screen"
-private const val ROUTE_IDENTITY = "identity_screen"
-
-/**
- * Third route so route changes are observable as a sequence rather than a two-tab toggle, and so the
- * gesture targets live on a screen of their own. Name matches the XML sample app.
- */
-private const val ROUTE_GESTURES = "gestures_screen"
+import com.acoustic.connect.android.demo.connect.external.ui.components.contractTag
+import com.acoustic.connect.android.demo.connect.external.ui.theme.BrandBackground
+import com.acoustic.connect.android.demo.connect.external.ui.theme.DarkGrey
+import com.acoustic.connect.android.demo.connect.external.ui.theme.Periwinkle
+import com.acoustic.connect.android.demo.connect.external.ui.theme.Violet
 
 /**
- * Fourth route for the app-state half of the analytics audit's scope. Session, foreground/background and
- * orientation signals have no natural home on a feature screen, and reading them back needs a
- * surface that survives the transition that produced them. Name matches the XML sample app.
+ * Route of the Behaviour tab's nested graph. A graph is never a destination itself, so this name
+ * is never logged; the screens inside it are.
  */
-private const val ROUTE_APP_STATE = "app_state_screen"
+private const val BEHAVIOUR_TAB = "behaviour_tab"
 
-private data class Tab(
-    val route: String,
-    val label: String,
-    val icon: ImageVector,
-    val testTagId: String,
-)
+/*
+ * Every other route is the screen's logged name. The SDK's Compose integration logs a destination's
+ * route as its screen name and the previous route as the referrer, so naming the routes after the
+ * shared contract is what makes this sample send the same screen views as the other platforms.
+ */
+
+private data class Tab(val route: String, val label: String, val icon: ImageVector, val tag: String)
 
 private val tabs = listOf(
-    Tab(route = ROUTE_NOTIFICATION, label = "Notification", icon = Icons.Filled.Notifications, testTagId = "tab_notification"),
-    Tab(route = ROUTE_IDENTITY, label = "Identity", icon = Icons.Filled.Person, testTagId = "tab_identity"),
-    Tab(route = ROUTE_GESTURES, label = "Gestures", icon = Icons.Filled.TouchApp, testTagId = "tab_gestures"),
-    Tab(route = ROUTE_APP_STATE, label = "App state", icon = Icons.Filled.Insights, testTagId = "tab_app_state"),
+    Tab(ScreenName.PUSH, "Push", Icons.Filled.Notifications, SampleId.TAB_NOTIFICATION),
+    Tab(ScreenName.IDENTITY, "Identity", Icons.Filled.Person, SampleId.TAB_IDENTITY),
+    Tab(BEHAVIOUR_TAB, "Behaviour", Icons.Filled.Insights, SampleId.TAB_BEHAVIOUR),
 )
 
+/** Screens that sit on top of the Behaviour hub and so get a back arrow. */
+private val stackedRoutes: Set<String> = setOf(
+    ScreenName.SHOWCASE,
+    ScreenName.GESTURES,
+    ScreenName.APP_STATE,
+) + (1..ScreenName.MAX_SHOWCASE_DEPTH).map(ScreenName::showcaseDetail)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(navController: NavHostController, notificationViewModel: NotificationViewModel) {
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route
+    val destination = backStackEntry?.destination
+    val route = destination?.route
 
     Scaffold(
-        modifier = Modifier.semantics {
-            testTagsAsResourceId = true
+        // Publishes every testTag below as a resource id, which is what Appium matches on.
+        // A Dialog is a separate window, so ReplayModalCard switches it on again for its own.
+        modifier = Modifier.semantics { testTagsAsResourceId = true },
+        containerColor = BrandBackground,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = route ?: "",
+                        color = Violet,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+                navigationIcon = {
+                    if (route in stackedRoutes) {
+                        IconButton(onClick = { navController.popBackStack() }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = Periwinkle)
+                        }
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = BrandBackground),
+            )
         },
         bottomBar = {
-            NavigationBar(
-                containerColor = Color.White
-            ) {
+            NavigationBar(containerColor = Color.White) {
                 tabs.forEach { tab ->
+                    val selected = destination?.hierarchy?.any { it.route == tab.route } == true
                     NavigationBarItem(
-                        selected = currentRoute == tab.route,
-                        onClick = {
-                            navController.navigate(tab.route) {
-                                popUpTo(ROUTE_NOTIFICATION) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = tab.icon,
-                                contentDescription = tab.label
-                            )
-                        },
+                        selected = selected,
+                        onClick = { onTabSelected(navController, tab.route, selected) },
+                        icon = { Icon(imageVector = tab.icon, contentDescription = tab.label) },
                         label = { Text(tab.label) },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = AcousticPurple,
-                            selectedTextColor = AcousticPurple,
+                            selectedIconColor = Periwinkle,
+                            selectedTextColor = Periwinkle,
                             indicatorColor = Color(0xFFF0EEFF),
-                            unselectedIconColor = Color(0xFF9E9E9E),
-                            unselectedTextColor = Color(0xFF9E9E9E),
+                            unselectedIconColor = DarkGrey,
+                            unselectedTextColor = DarkGrey,
                         ),
-                        modifier = Modifier.semantics { testTag = tab.testTagId },
+                        modifier = Modifier.contractTag(tab.tag),
                     )
                 }
             }
-        }
+        },
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = ROUTE_NOTIFICATION,
+            startDestination = ScreenName.PUSH,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable(ROUTE_NOTIFICATION) {
-                NotificationScreen(
-                    viewModel = notificationViewModel,
-                )
+            composable(ScreenName.PUSH) {
+                NotificationScreen(viewModel = notificationViewModel)
             }
-            composable(ROUTE_IDENTITY) {
+            composable(ScreenName.IDENTITY) {
                 IdentityScreen()
             }
-            composable(ROUTE_GESTURES) {
-                GestureScreen()
-            }
-            composable(ROUTE_APP_STATE) {
-                AppStateScreen()
+            navigation(route = BEHAVIOUR_TAB, startDestination = ScreenName.BEHAVIOUR) {
+                composable(ScreenName.BEHAVIOUR) {
+                    BehaviourScreen(onOpenShowcase = { navController.navigate(ScreenName.SHOWCASE) })
+                }
+                composable(ScreenName.SHOWCASE) {
+                    ShowcaseScreen(onNavigate = { target -> navController.navigate(target) })
+                }
+                // One destination per depth rather than one with an argument: the SDK logs the
+                // route pattern, so an argument would log the placeholder instead of the name.
+                (1..ScreenName.MAX_SHOWCASE_DEPTH).forEach { depth ->
+                    composable(ScreenName.showcaseDetail(depth)) {
+                        ShowcaseDetailScreen(
+                            depth = depth,
+                            onPushNext = { navController.navigate(ScreenName.showcaseDetail(depth + 1)) },
+                            onBack = { navController.popBackStack() },
+                        )
+                    }
+                }
+                composable(ScreenName.GESTURES) {
+                    GestureScreen()
+                }
+                composable(ScreenName.APP_STATE) {
+                    AppStateScreen()
+                }
             }
         }
+    }
+}
+
+/**
+ * Switches tabs keeping each tab's own stack, and — like React Navigation's bottom tabs — pressing
+ * the tab you are already on pops its stack back to the root.
+ */
+private fun onTabSelected(navController: NavHostController, route: String, alreadySelected: Boolean) {
+    if (alreadySelected) {
+        if (route == BEHAVIOUR_TAB) navController.popBackStack(ScreenName.BEHAVIOUR, inclusive = false)
+        return
+    }
+    navController.navigate(route) {
+        popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+        restoreState = true
     }
 }

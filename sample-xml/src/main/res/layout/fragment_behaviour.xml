@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Demo.Screen">
+
+    <LinearLayout style="@style/Demo.Column">
+
+        <include layout="@layout/view_logo_header" />
+
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/behaviour_showcase_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/behaviour_showcase_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_showcase"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/behaviour_open_showcase" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView style="@style/Demo.Text.Footnote" android:text="@string/behaviour_footnote" />
+
+    </LinearLayout>
+</ScrollView>

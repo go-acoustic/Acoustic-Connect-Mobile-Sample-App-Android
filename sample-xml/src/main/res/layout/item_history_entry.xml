@@ -9,7 +9,7 @@
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E5E5EA"
+        android:background="@color/light_grey"
         android:visibility="gone" />
 
     <LinearLayout
@@ -27,7 +27,8 @@
             android:layout_weight="1"
             android:textSize="@dimen/text_small"
             android:textAppearance="?attr/textAppearanceBodyMedium"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@color/violet" />
 
         <TextView
             android:id="@+id/tv_history_value"
@@ -37,7 +38,7 @@
             android:layout_marginStart="8dp"
             android:textSize="@dimen/text_small"
             android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="#6B6B6B" />
+            android:textColor="@color/dark_grey" />
 
     </LinearLayout>
 

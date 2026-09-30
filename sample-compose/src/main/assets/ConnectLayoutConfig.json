@@ -12,7 +12,7 @@
       "CaptureScreenshotOn": 2,
       "Masking": {
         "HasMasking": true,
-        "HasCustomMask": false,
+        "HasCustomMask": true,
         "Sensitive": {
           "capitalCaseAlphabet": "X",
           "number": "9",
@@ -21,10 +21,12 @@
         },
         "MaskIdList": [
         ],
-        "MaskValueList": [],
+        "MaskValueList": ["^SECRET-"],
         "MaskAccessibilityLabelList": [
           "sensitive_label",
-          "mask_label"
+          "mask_label",
+          "Identifier Value",
+          "Masked field"
         ]
       }
     },

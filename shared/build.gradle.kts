@@ -37,4 +37,7 @@ dependencies {
     api(libs.connect)
 
     testImplementation(libs.junit)
+    // android.jar's org.json is a stub that throws in a JVM test; the real one lets the payload
+    // tests parse what the cards display.
+    testImplementation(libs.org.json)
 }

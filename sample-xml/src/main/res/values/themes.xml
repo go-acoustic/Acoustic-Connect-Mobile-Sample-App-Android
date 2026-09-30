@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.Connect" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/acoustic_purple</item>
-        <item name="colorPrimaryVariant">@color/acoustic_purple</item>
-        <item name="colorSecondary">@color/acoustic_green</item>
+        <item name="colorPrimary">@color/periwinkle</item>
+        <item name="colorPrimaryVariant">@color/violet</item>
+        <item name="colorSecondary">@color/brand_green</item>
+        <item name="android:windowBackground">@color/brand_background</item>
     </style>
 </resources>

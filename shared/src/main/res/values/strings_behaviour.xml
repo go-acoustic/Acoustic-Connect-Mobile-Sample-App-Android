@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Card copy shared by both samples, so a card reads the same in Compose and in XML. Lines that
+  have to differ by UI framework (how a screen view or a tap is captured, how a field is masked)
+  live in each app instead. Wording follows the React Native sample, adapted to Android.
+-->
+<resources>
+    <!-- Identity -->
+    <string name="identity_header">Identity Demo</string>
+    <string name="identity_last_result">Last Result</string>
+    <string name="identity_log_title">Log Identity</string>
+    <string name="identity_name_label">Identifier Name</string>
+    <string name="identity_name_placeholder">Email Address</string>
+    <string name="identity_value_label">Identifier Value</string>
+    <string name="identity_value_placeholder">user@example.com</string>
+    <string name="identity_log_logged_in">Log Logged In With Email</string>
+    <string name="identity_log_registered">Log Account Registered With Email</string>
+    <string name="identity_recent">Recent</string>
+
+    <!-- Behaviour hub -->
+    <string name="behaviour_header">Behaviour</string>
+    <string name="behaviour_showcase_title">Showcase</string>
+    <string name="behaviour_showcase_body">What the SDK captures once your app is integrated: screen views, taps, text entry, custom events, signals, dialogs, exceptions and session replay of modals. One card per feature, each with the call it makes and where to read the result.</string>
+    <string name="behaviour_open_showcase">Open Showcase</string>
+    <string name="behaviour_footnote">Everything here posts to the collector configured in ConnectBasicConfig.properties. Android posts on a foreground timer of about 30 seconds.</string>
+
+    <!-- Showcase -->
+    <string name="showcase_header">Showcase</string>
+    <string name="showcase_read_title">How to read the results</string>
+    <string name="showcase_read_body">Every card sends something to the collector configured in ConnectBasicConfig.properties. Drive a card, then read the posted message there. Android posts on a foreground timer of about 30 seconds.</string>
+    <string name="showcase_screen_views_title">Screen views</string>
+    <string name="showcase_open_detail">Open a detail screen</string>
+    <string name="showcase_taps_title">Taps</string>
+    <string name="showcase_tap_me">Tap me</string>
+    <string name="showcase_gestures_title">Gestures</string>
+    <string name="showcase_gestures_body">Long press, double tap, swipe in any direction, pinch and scroll targets on a screen of their own. Compare the gesture type in each posted event with the one the screen reports.</string>
+    <string name="showcase_open_gestures">Open gestures</string>
+    <string name="showcase_text_title">Text entry and masking</string>
+    <string name="showcase_plain_field">Plain field</string>
+    <string name="showcase_plain_placeholder">Anything you type is captured</string>
+    <string name="showcase_masked_field">Masked field</string>
+    <string name="showcase_masked_placeholder">SECRET-1234</string>
+    <string name="showcase_custom_event_title">Custom event</string>
+    <string name="showcase_custom_event_body">logCustomEvent(name, values) sends a named event with a flat map of values. Read it under customEvent in the posted message.</string>
+    <string name="showcase_send_custom_event">Send custom event</string>
+    <string name="showcase_signal_title">Log Signal</string>
+    <string name="showcase_signal_body">Sends a signal through logSignal. The nested payload carries an object and an array of objects; the flat one is scalars only. Compare the signal block in the posted type-21 message across platforms.</string>
+    <string name="showcase_send_nested_signal">Send Nested Signal</string>
+    <string name="showcase_send_flat_signal">Send Flat Signal</string>
+    <string name="showcase_exception_title">Exceptions</string>
+    <string name="showcase_exception_body">Uncaught exceptions are reported automatically. For errors your app catches, logExceptionEvent(name, message, stack, unhandled) reports them explicitly. This button throws, catches and reports one.</string>
+    <string name="showcase_log_exception">Log a handled exception</string>
+    <string name="showcase_dialog_title">Dialogs</string>
+    <string name="showcase_dialog_body">Opens a platform AlertDialog. logScreenLayoutSetOnShowListener captures its layout when it appears, and logDialogEvent logs the button pressed.</string>
+    <string name="showcase_show_dialog">Show a dialog</string>
+    <string name="showcase_modal_opaque_title">Modal (opaque)</string>
+    <string name="showcase_modal_transparent_title">Modal (transparent)</string>
+    <string name="showcase_modal_body">Opens a dialog, which renders in a window of its own, outside the screen it covers. Every element inside it should be selectable in session replay, not just visible in the screenshot.</string>
+    <string name="showcase_open_modal">Open modal</string>
+    <string name="showcase_modal_content_title">Modal content</string>
+    <string name="showcase_modal_content_body">Text, an input, and buttons — each should appear as its own control in the captured layout.</string>
+    <string name="showcase_modal_note_label">Note</string>
+    <string name="showcase_modal_note_placeholder">Type to check text capture</string>
+    <string name="showcase_modal_primary_action">Primary action</string>
+    <string name="showcase_modal_close">Close</string>
+    <string name="showcase_modal_status">Note: %1$s · Primary action taps: %2$d</string>
+    <string name="showcase_app_state_title">App state</string>
+    <string name="showcase_app_state_body">Foreground, background and orientation changes, logged as custom events tagged with the session id, alongside the SDK\'s own session and logical page.</string>
+    <string name="showcase_open_app_state">Open app state</string>
+    <string name="showcase_capture_title">Runtime capture control</string>
+    <string name="showcase_capture_body">disable() stops capture. Confirm it on the build in front of you rather than assuming: tap Disable, navigate a few screens, and check that no further layout messages arrive.</string>
+    <string name="showcase_capture_disable">Disable SDK</string>
+    <string name="showcase_capture_enable">Re-enable SDK</string>
+
+    <!-- Showcase detail -->
+    <string name="detail_logged_title">Screen view logged</string>
+    <string name="detail_logged_body">Opening this screen logged a screen view named:</string>
+    <string name="detail_logged_referrer">The referrer is the screen you navigated from. Going back logs the previous screen again, with this one as its referrer — unless a screen view for it is still waiting in the SDK\'s queue, which Android drops as a duplicate until the next post.</string>
+    <string name="detail_chain_title">Referrer chain</string>
+    <string name="detail_chain_body">Push another detail screen to see the chain advance by one, then pop back through it. Depth %1$d of %2$d.</string>
+    <string name="detail_push_another">Push another</string>
+    <string name="detail_chain_limit">Chain limit reached</string>
+    <string name="detail_back">Back</string>
+</resources>

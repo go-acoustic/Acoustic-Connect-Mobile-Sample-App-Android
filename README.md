@@ -5,8 +5,8 @@ their non-UI code.
 
 | Module | UI toolkit | Covers | SDK artifact |
 |---|---|---|---|
-| `sample-compose` | Jetpack Compose | Push, identity, gestures, app state | `connect-push` |
-| `sample-xml` | Views / XML layouts | Identity, gestures, app state — **no push** | `connect` |
+| `sample-compose` | Jetpack Compose | Push, identity, behaviour showcase | `connect-push` |
+| `sample-xml` | Views / XML layouts | Identity, behaviour showcase — **no push** | `connect` |
 
 The second app exists to cover what actually differs between the two UI toolkits: screen-view
 emission, control capture and masking all take different routes through the SDK. Push does not —
@@ -15,8 +15,22 @@ config files it needs would add maintenance without adding coverage. `sample-xml
 analytics-only and needs no Firebase or AppGallery account to build and run.
 
 Everything that is not UI — credential loading, the signal log, app-state instrumentation, the
-identity view model and the swipe classifier — lives in `shared/` and is compiled into both apps.
-Read either app to learn the integration; read both to see what changes with the UI toolkit.
+identity view model, the swipe classifier, the Showcase's SDK calls and the card copy — lives in
+`shared/` and is compiled into both apps. Read either app to learn the integration; read both to
+see what changes with the UI toolkit.
+
+Both apps follow the same layout as the Acoustic Connect React Native and iOS samples, down to
+their element ids and logged screen names, so one set of UI tests drives all of them:
+
+| Tab | Id | Screens |
+|---|---|---|
+| Push (Compose only) | `tab_notification` | Notification authorization |
+| Identity | `tab_identity` | Log a `loggedIn` or `accountRegistered` identity signal; recent identifiers |
+| Behaviour | `tab_behaviour` | A hub that opens the **Showcase**: one card per capture feature — screen views, taps, gestures, text entry and masking, custom events, signals, exceptions, dialogs, session replay of modals, app state, and runtime capture control |
+
+Every element a test can address carries the same id in both apps: a Compose `testTag`, published
+as a resource id with `testTagsAsResourceId`, or an XML `android:id`. The full list is
+`shared/.../contract/SampleId.kt`; the logged screen names are in `ScreenName.kt`.
 
 Use this alongside the Integration Guide to see a working implementation of push registration,
 notification handling, and identity logging across both FCM (Firebase) and HMS (Huawei) providers.
@@ -29,9 +43,9 @@ notification handling, and identity logging across both FCM (Firebase) and HMS (
 |---|---|
 | Push registration | Automatic provider detection (`strictProvider = null`) supporting both FCM and HMS |
 | Notification authorization | Request and display push permission status (Android 13+) |
-| Token display | Show active push token and detected provider (FCM / HMS) |
 | Analytics capture | Enabled by default — events, screenshots, and screen visits out of the box |
-| Identity logging | Log identity signals and view recent history (last 5 entries) |
+| Identity logging | Log `loggedIn` / `accountRegistered` identity signals and view recent history (last 5 entries) |
+| Behaviour showcase | One card per analytics feature, each showing the SDK call it makes and what it sent |
 | Dual provider support | FCM via Firebase, HMS via Huawei AppGallery Connect |
 
 ---
@@ -207,10 +221,17 @@ shared/                               # UI-free, compiled into BOTH apps
   src/main/assets/
     ConnectBasicConfig.properties     # AppKey + PostMessageUrl — single source of truth
     ConnectAdvancedConfig.json        # SDK feature switches
+  src/main/res/values/strings_behaviour.xml  # Card copy both apps display
   src/main/java/.../
     AcousticCredentials.kt            # Thin loader that reads ConnectBasicConfig.properties
+    contract/SampleId.kt              # Element ids shared with the other platforms' samples
+    contract/ScreenName.kt            # Logged screen names
+    behaviour/ShowcaseActions.kt      # The Showcase's SDK calls, payloads and result lines
+    behaviour/ScreenViewCases.kt      # Screen-name test matrix
+    behaviour/Scenarios.kt            # Registry of verified fixes
     analytics/SignalLog.kt            # In-memory record of what the app emitted
     analytics/AppStateSignals.kt      # Foreground/background + orientation custom events
+    analytics/ScreenViewTrail.kt      # Previous screen, for screen-view referrers
     identity/IdentityViewModel.kt     # logIdentificationEvent, history (last 5)
     gestures/SwipeName.kt             # Swipe-direction classifier
 
@@ -221,12 +242,14 @@ sample-compose/                       # Compose app: push + analytics
     assets/ConnectLayoutConfig.json   # Per-screen capture and masking rules
     java/.../
       MainActivity.kt                 # SDK init, ConnectWrapper, push config
-      MainScreen.kt                   # Bottom navigation
-      notification/                   # Push authorization UI, token display, permission handling
+      MainScreen.kt                   # Push / Identity / Behaviour tabs; routes are the logged screen names
+      notification/                   # Push authorization UI and permission handling
       identity/IdentityScreen.kt      # Identity logging UI
+      behaviour/                      # Behaviour hub, Showcase, detail screen, replay modals
       appstate/AppStateScreen.kt      # Session / logical page / signal log
       gestures/GestureScreen.kt       # Gesture capture targets
       analytics/ScreenviewEffects.kt  # Compose screen-view emission
+      ui/components/                  # Cards, buttons and fields every screen is built from
       ui/theme/                       # Acoustic brand colours, Material3 theme, typography
     AndroidManifest.xml               # INTERNET, NETWORK_STATE, POST_NOTIFICATIONS
 
@@ -235,15 +258,31 @@ sample-xml/                           # Views app: analytics only, no push
     assets/ConnectLayoutConfig.json   # Per-screen capture and masking rules
     java/.../
       MainActivity.kt                 # Connect.init + Connect.enable, no ConnectPushConfig
+      ui/ScreenFragment.kt            # Logs each screen's screen view, with its referrer
       identity/IdentityFragment.kt    # Identity logging UI
+      behaviour/                      # Behaviour hub, Showcase, detail screen, replay modals
       appstate/AppStateFragment.kt    # Session / logical page / signal log
       gestures/GesturesFragment.kt    # Gesture capture targets
     res/layout/                       # Fragment layouts
-    res/navigation/nav_graph.xml      # Identity / Gestures / App state
+    res/values/styles.xml             # Cards, buttons and fields every screen is built from
+    res/navigation/nav_graph.xml      # Identity tab, and the Behaviour tab's stack
     AndroidManifest.xml               # INTERNET, NETWORK_STATE — no POST_NOTIFICATIONS
 ```
 
 ---
+
+## Configuration notes
+
+The bundled config files are JSON and cannot carry comments, so the settings that differ from the
+SDK defaults are explained here.
+
+| File | Setting | Why |
+|---|---|---|
+| `shared/.../ConnectAdvancedConfig.json` | `EnableFragmentLifeCycleListener: false` | The XML app's fragments log their own screen views, under the shared screen names, from `ScreenFragment`. With the listener on, the SDK also logs a screen view named after the fragment class (`ShowcaseFragment`, …) on the first gesture on each fragment, which doubles the screen views and breaks the shared names. The Compose app has no fragments, so the switch does not affect it. |
+| `sample-xml/.../ConnectLayoutConfig.json` | No `MainActivity` entry | An entry with `ScreenChange: false` for the host activity pauses capture on the first touch, and nothing lifts the pause again. |
+| both `ConnectLayoutConfig.json` | `HasCustomMask: true` in `GlobalScreenSettings` | A masked value keeps its shape (`SECRET-1234` → `XXXXXX#9999`) instead of arriving empty, which is what the Showcase's masking card asks you to compare. |
+| `sample-xml/.../ConnectLayoutConfig.json` | `MaskValueList: ["^SECRET-"]` | The Views capture masks by value. |
+| `sample-compose/.../ConnectLayoutConfig.json` | `MaskAccessibilityLabelList` includes `Identifier Value` and `Masked field` | The Compose capture decides masking by a field's label, not its value. |
 
 ## Push provider selection
 

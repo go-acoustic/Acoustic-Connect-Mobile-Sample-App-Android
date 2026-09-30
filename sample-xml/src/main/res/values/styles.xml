@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The building blocks every screen is made of, mirroring the React Native sample's components of
+  the same names (DemoCard, PrimaryButton, SecondaryButton, DemoTextField) so the samples lay out
+  alike. The Compose sample has the same set in ui/components/DemoComponents.kt.
+-->
+<resources>
+    <!-- Root of the dotted names below, which inherit from it implicitly. -->
+    <style name="Demo" />
+
+    <style name="Demo.Screen">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/brand_background</item>
+        <item name="android:fillViewport">true</item>
+    </style>
+
+    <style name="Demo.Column">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">32dp</item>
+        <item name="android:divider">@drawable/space_20</item>
+        <item name="android:showDividers">middle</item>
+    </style>
+
+    <style name="Demo.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardCornerRadius">14dp</item>
+        <item name="cardElevation">1dp</item>
+    </style>
+
+    <style name="Demo.CardBody">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:divider">@drawable/space_12</item>
+        <item name="android:showDividers">middle</item>
+    </style>
+
+    <style name="Demo.Text">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Demo.Text.Header">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textColor">@color/violet</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Demo.Text.CardTitle">
+        <item name="android:textColor">@color/violet</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Demo.Text.Body">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+    </style>
+
+    <style name="Demo.Text.Footnote" parent="Demo.Text.Body">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="Demo.Text.Label">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Monospaced output: a result line, a payload, a logged name. -->
+    <style name="Demo.Text.Mono">
+        <item name="android:textColor">@color/violet</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <style name="Demo.Text.Hint">
+        <item name="android:textColor">@color/violet</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+    </style>
+
+    <style name="Demo.NoteBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/bg_note</item>
+        <item name="android:padding">10dp</item>
+    </style>
+
+    <style name="Demo.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="backgroundTint">@color/primary_button_tint</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="Demo.Button.Secondary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/secondary_button_stroke</item>
+        <item name="strokeColor">@color/secondary_button_stroke</item>
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="cornerRadius">10dp</item>
+    </style>
+
+    <style name="Demo.Field" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="boxStrokeColor">@color/periwinkle</item>
+        <item name="boxBackgroundColor">@android:color/white</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="Demo.FieldInput">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:inputType">text|textNoSuggestions</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- The replay modals: a full-screen dialog window, opaque or dimmed. -->
+    <style name="Demo.ModalDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+</resources>

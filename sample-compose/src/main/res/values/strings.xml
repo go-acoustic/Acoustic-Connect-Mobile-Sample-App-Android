@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Connect Application</string>
+
+    <!--
+      Showcase lines that depend on how the Compose integration captures things. The XML sample
+      defines the same names with its own wording; everything else is in the shared module.
+    -->
+    <string name="showcase_read_capture">The first three cards need no SDK call at all — wrapping the navigation tree in ConnectWrapper is what captures them.</string>
+    <string name="showcase_screen_views_body">Every navigation inside ConnectWrapper logs a screen view. The name is the destination\'s route, and the referrer is the screen you came from.</string>
+    <string name="showcase_taps_body">Every touch inside ConnectWrapper is logged as a tap event. Nothing to call — tap the button and look for the tap in the next post. The button also appears in the captured layout as its own control, under a readable id built from its text.</string>
+    <string name="showcase_taps_result">taps: %1$d · layout id: %2$s</string>
+    <string name="showcase_text_body">Each LoggedOutlinedTextField is captured in the screen\'s layout as its own control. A field whose label is listed in MaskAccessibilityLabelList in ConnectLayoutConfig.json is masked before the layout leaves the device.</string>
+    <string name="showcase_text_hint">The sample config lists the second field\'s label, Masked field, in MaskAccessibilityLabelList. Compare the two fields\' entries in the posted layout message.</string>
 </resources>

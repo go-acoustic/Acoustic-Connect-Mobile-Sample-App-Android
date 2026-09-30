@@ -11,47 +11,32 @@ package com.acoustic.connect.android.demo.connect.external.gestures
 
 import android.os.Bundle
 import android.view.GestureDetector
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import com.acoustic.connect.android.connectmod.Connect
 import com.acoustic.connect.android.demo.connect.external.R
-import com.acoustic.connect.android.demo.connect.external.analytics.SignalLog
-import com.acoustic.connect.android.connectmod.model.ConnectScreenviewType
+import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
+import com.acoustic.connect.android.demo.connect.external.ui.ScreenFragment
 
 /**
  * The targets are plain views with no analytics calls of their own — the SDK's window-wide
  * [Connect.dispatchTouchEvent] hook in `MainActivity` is the only thing that can report them, which is
  * what makes a missing signal attributable to the SDK rather than to the app.
  */
-class GesturesFragment : Fragment() {
+class GesturesFragment : ScreenFragment(R.layout.fragment_gestures) {
+
+    override val screenName = ScreenName.GESTURES
 
     private lateinit var lastGestureLabel: TextView
     private var zoom = 1f
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View = inflater.inflate(R.layout.fragment_gestures, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Connect.logScreenLayout(requireActivity(), SCREEN_NAME)
-        // Return values recorded rather than dropped: the audit needs to know whether the SDK
-        // accepted each screenview, not just that the call was made.
-        SignalLog.record(
-            "screenviewLoad",
-            SCREEN_NAME,
-            Connect.logScreenview(requireActivity(), SCREEN_NAME, ConnectScreenviewType.LOAD),
-        )
 
         lastGestureLabel = view.findViewById(R.id.tv_gestures_last)
         populateScrollableRows(view.findViewById(R.id.gesture_row_container))
@@ -59,16 +44,6 @@ class GesturesFragment : Fragment() {
         wireDoubleTap(view.findViewById(R.id.gesture_double_tap))
         wireSwipe(view.findViewById(R.id.gesture_swipe))
         wirePinchZoom(view.findViewById(R.id.gesture_pinch_zoom))
-    }
-
-    override fun onDestroyView() {
-        // Pairs the LOAD above. The Compose app emits UNLOAD from onDispose; same signal pair.
-        SignalLog.record(
-            "screenviewUnload",
-            SCREEN_NAME,
-            Connect.logScreenview(requireActivity(), SCREEN_NAME, ConnectScreenviewType.UNLOAD),
-        )
-        super.onDestroyView()
     }
 
     /** Enough rows that a swipe produces real scrolling rather than a bounce. */
@@ -163,8 +138,6 @@ class GesturesFragment : Fragment() {
     }
 
     companion object {
-        /** Logical page name — identical to the Compose sample app's route. */
-        private const val SCREEN_NAME = "gestures_screen"
         private const val LIST_ROWS = 40
         private const val ROW_PADDING_PX = 24
         /** Travel a drag must clear before it counts as a swipe rather than a sloppy tap. */

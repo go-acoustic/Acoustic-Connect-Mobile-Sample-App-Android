@@ -10,22 +10,20 @@
 package com.acoustic.connect.android.demo.connect.external.appstate
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.acoustic.connect.android.connectmod.Connect
 import com.acoustic.connect.android.demo.connect.external.R
+import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
+import com.acoustic.connect.android.demo.connect.external.ui.ScreenFragment
 import com.acoustic.connect.android.demo.connect.external.analytics.SignalLog
 import com.acoustic.connect.android.demo.connect.external.analytics.currentLogicalPageName
 import com.acoustic.connect.android.demo.connect.external.analytics.currentSessionId
-import com.acoustic.connect.android.connectmod.model.ConnectScreenviewType
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -42,7 +40,9 @@ import java.util.Locale
  * <p>Session id and logical page are read on resume rather than observed: the SDK exposes no change
  * notification for either.
  */
-class AppStateFragment : Fragment() {
+class AppStateFragment : ScreenFragment(R.layout.fragment_app_state) {
+
+    override val screenName = ScreenName.APP_STATE
 
     private lateinit var sdkEnabledLabel: TextView
     private lateinit var sessionIdLabel: TextView
@@ -50,18 +50,8 @@ class AppStateFragment : Fragment() {
     private lateinit var signalLogHeader: TextView
     private lateinit var signalLogContainer: LinearLayout
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View = inflater.inflate(R.layout.fragment_app_state, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        Connect.logScreenLayout(requireActivity(), SCREEN_NAME)
-        val accepted = Connect.logScreenview(requireActivity(), SCREEN_NAME, ConnectScreenviewType.LOAD)
-        SignalLog.record("screenviewLoad", SCREEN_NAME, accepted)
 
         sdkEnabledLabel = view.findViewById(R.id.tv_sdk_enabled)
         sessionIdLabel = view.findViewById(R.id.tv_session_id)
@@ -86,12 +76,6 @@ class AppStateFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         renderSdkState()
-    }
-
-    override fun onDestroyView() {
-        val accepted = Connect.logScreenview(requireActivity(), SCREEN_NAME, ConnectScreenviewType.UNLOAD)
-        SignalLog.record("screenviewUnload", SCREEN_NAME, accepted)
-        super.onDestroyView()
     }
 
     private fun renderSdkState() {
@@ -140,8 +124,6 @@ class AppStateFragment : Fragment() {
         SimpleDateFormat("HH:mm:ss.SSS", Locale.US).format(Date(timestampMillis))
 
     companion object {
-        /** Logical page name — identical to the Compose sample app's route. */
-        private const val SCREEN_NAME = "app_state_screen"
         private const val EVENT_SESSION_START = "sessionStart"
         private const val ROW_PADDING_PX = 12
         private const val EMPTY = "—"

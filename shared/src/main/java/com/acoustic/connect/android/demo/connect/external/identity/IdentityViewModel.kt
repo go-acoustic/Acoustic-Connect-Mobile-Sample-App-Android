@@ -23,81 +23,72 @@ private const val PREFS_NAME = "identity_prefs"
 private const val KEY_HISTORY = "identity_history"
 private const val HISTORY_SEPARATOR = "|||"
 private const val MAX_HISTORY = 5
+private const val SIGNAL_LOGGED_IN = "loggedIn"
+private const val SIGNAL_ACCOUNT_REGISTERED = "accountRegistered"
+private const val METHOD_EMAIL = "email"
 
 data class IdentityHistoryEntry(val name: String, val value: String)
 
 data class IdentityUiState(
     val identifierName: String = "",
     val identifierValue: String = "",
-    val statusMessage: String = "",
-    val isSuccess: Boolean = false,
-    val isSdkEnabled: Boolean = false,
+    /** The Last Result line — `✓ Email: user@example.com`, or null before the first call. */
+    val lastResult: String? = null,
     val history: List<IdentityHistoryEntry> = emptyList(),
-)
+) {
+    /** Both buttons stay disabled until each field holds something other than whitespace. */
+    val canLog: Boolean get() = identifierName.isNotBlank() && identifierValue.isNotBlank()
+}
 
+/**
+ * The Identity tab's state and its two identity signals, shared by both samples.
+ *
+ * `loggedIn` pairs with `loginMethod` and `accountRegistered` with `registrationMethod`, the same
+ * payloads the React Native and iOS samples send, so one e2e assertion holds for all of them.
+ */
 class IdentityViewModel(application: Application) : AndroidViewModel(application) {
 
     private val prefs = application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-    private val _uiState = MutableStateFlow(
-        IdentityUiState(
-            isSdkEnabled = Connect.isEnabled(),
-            history = loadHistory(),
-        )
-    )
+    private val _uiState = MutableStateFlow(IdentityUiState(history = loadHistory()))
     val uiState: StateFlow<IdentityUiState> = _uiState.asStateFlow()
 
     fun onIdentifierNameChanged(value: String) {
-        _uiState.update { it.copy(identifierName = value, statusMessage = "", isSuccess = false) }
+        _uiState.update { it.copy(identifierName = value) }
     }
 
     fun onIdentifierValueChanged(value: String) {
-        _uiState.update { it.copy(identifierValue = value, statusMessage = "", isSuccess = false) }
+        _uiState.update { it.copy(identifierValue = value) }
     }
 
-    fun onLogIdentity() {
-        val name = _uiState.value.identifierName.trim()
-        val value = _uiState.value.identifierValue.trim()
+    fun onLogLoggedIn() = logIdentity(SIGNAL_LOGGED_IN, mapOf("loginMethod" to METHOD_EMAIL))
 
-        if (name.isEmpty() || value.isEmpty()) {
-            _uiState.update { it.copy(statusMessage = "Identifier name and value cannot be empty", isSuccess = false) }
-            return
-        }
-
-        val success = Connect.logIdentificationEvent(name, value, signalType = "pageView")
-        if (success) {
-            val updated = buildUpdatedHistory(name, value)
-            saveHistory(updated)
-            _uiState.update {
-                it.copy(
-                    statusMessage = "Identity signal was sent",
-                    isSuccess = true,
-                    history = updated,
-                )
-            }
-        } else {
-            _uiState.update { it.copy(statusMessage = "Failed to send identity signal", isSuccess = false) }
-        }
-    }
+    fun onLogAccountRegistered() =
+        logIdentity(SIGNAL_ACCOUNT_REGISTERED, mapOf("registrationMethod" to METHOD_EMAIL))
 
     fun onHistoryEntrySelected(entry: IdentityHistoryEntry) {
+        _uiState.update { it.copy(identifierName = entry.name, identifierValue = entry.value) }
+    }
+
+    private fun logIdentity(signalType: String, parameters: Map<String, String>) {
+        val name = _uiState.value.identifierName.trim()
+        val value = _uiState.value.identifierValue.trim()
+        if (name.isEmpty() || value.isEmpty()) return
+
+        val success = Connect.logIdentificationEvent(
+            identifierName = name,
+            identifierValue = value,
+            signalType = signalType,
+            additionalParameters = parameters,
+        )
+        val updated = buildUpdatedHistory(_uiState.value.history, name, value)
+        saveHistory(updated)
         _uiState.update {
             it.copy(
-                identifierName = entry.name,
-                identifierValue = entry.value,
-                statusMessage = "",
-                isSuccess = false,
+                lastResult = if (success) "✓ $name: $value" else "✗ Failed to log $name",
+                history = updated,
             )
         }
-    }
-
-    fun refreshSdkEnabled() {
-        _uiState.update { it.copy(isSdkEnabled = Connect.isEnabled()) }
-    }
-
-    private fun buildUpdatedHistory(name: String, value: String): List<IdentityHistoryEntry> {
-        val entry = IdentityHistoryEntry(name, value)
-        return (listOf(entry) + _uiState.value.history).take(MAX_HISTORY)
     }
 
     private fun saveHistory(history: List<IdentityHistoryEntry>) {
@@ -132,3 +123,14 @@ class IdentityViewModel(application: Application) : AndroidViewModel(application
         }
     }
 }
+
+/**
+ * Newest first, at most five, one entry per identifier name: logging a name again replaces its
+ * older value rather than listing both.
+ */
+internal fun buildUpdatedHistory(
+    history: List<IdentityHistoryEntry>,
+    name: String,
+    value: String,
+): List<IdentityHistoryEntry> =
+    (listOf(IdentityHistoryEntry(name, value)) + history.filter { it.name != name }).take(MAX_HISTORY)

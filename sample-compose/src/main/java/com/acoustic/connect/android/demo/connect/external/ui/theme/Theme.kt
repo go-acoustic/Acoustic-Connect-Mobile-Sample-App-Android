@@ -1,7 +1,6 @@
 package com.acoustic.connect.android.demo.connect.external.ui.theme
 
 import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -17,9 +16,11 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Periwinkle,
+    secondary = Violet,
+    tertiary = BrandGreen,
+    background = BrandBackground,
+    onBackground = Violet,
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -34,9 +35,10 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun ConnectApplicationTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    // Light and brand-coloured by default, like the other platforms' samples, so screenshots and
+    // replays of the three can be compared side by side.
+    darkTheme: Boolean = false,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
