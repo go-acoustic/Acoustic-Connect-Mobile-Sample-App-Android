@@ -29,7 +29,7 @@ constraintlayout = "2.1.4"
 # One version for every Acoustic SDK coordinate. The publish pipeline rewrites this single line
 # (lay-down-sample.sh) and the e2e job injects into it, so both samples always demonstrate the
 # same SDK build: sample-compose on connect-push, sample-xml on the analytics-only connect.
-connectSdk = "11.1.2-beta"
+connectSdk = "11.1.3-beta"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
