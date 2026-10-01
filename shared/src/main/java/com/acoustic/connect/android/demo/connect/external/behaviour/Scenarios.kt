@@ -14,10 +14,12 @@ package com.acoustic.connect.android.demo.connect.external.behaviour
  * is actually verifiable against the SDK build the app is running. Reserved: the Verification
  * screen that renders it comes later.
  *
- * The registry is shared with the React Native and iOS samples, text included, so a scenario key
- * quoted in a support thread means the same card everywhere. That is why React Native bridge fixes
- * appear here too, and why no card is filtered by platform: an Android-only card still renders on
- * iOS and the other way round.
+ * The registry is shared with the React Native and iOS samples — keys, titles, channels and order
+ * are identical, so a scenario key quoted in a support thread means the same card everywhere. That
+ * is why React Native bridge fixes appear here too, and why no card is filtered by platform: an
+ * Android-only card still renders on iOS and the other way round. Where the React Native text says
+ * something untrue of a native app, the Do / Expect text says what this app actually does
+ * instead, as the iOS samples do.
  *
  * [Scenario.blockedBy] is set when the fix exists in source but no published native artifact
  * carries it yet. Those cards still render, deliberately: running them captures the failing
@@ -71,7 +73,8 @@ object Scenarios {
         action = "Send a custom event carrying a string, a boolean and a number.",
         expected = "Values arrive unwrapped — \"pro\", \"true\", \"2.0\" — not the Kotlin " +
             "data-class form \"Second(value=pro)\". Android was the broken platform; iOS already " +
-            "unwrapped correctly, so the two should now agree.",
+            "unwrapped correctly, so the two should now agree. This app has no bridge: native " +
+            "logCustomEvent takes strings, so its values arrive as \"pro\", \"false\", \"2\".",
         channel = ScenarioChannel.REACT_NATIVE,
         platform = ScenarioPlatform.BOTH,
     )
@@ -92,10 +95,13 @@ object Scenarios {
         key = "identity-login-method-default",
         title = "loggedIn defaults to loginMethod",
         action = "Log an identity with both the signal type and the parameters omitted, so the " +
-            "bridge has to supply its own defaults.",
-        expected = "The signal carries loginMethod: email. Before the fix the loggedIn default " +
-            "was paired with registrationMethod, so every defaulted identity call emitted the " +
-            "wrong attribute.",
+            "SDK — the bridge, on React Native — has to supply its own defaults.",
+        expected = "On React Native the defaulted signal carries loginMethod: email. Before the " +
+            "fix the bridge paired its loggedIn default with registrationMethod, so every " +
+            "defaulted identity call emitted the wrong attribute. This app has no bridge: the " +
+            "native SDK defaults to signalType loggedIn with no method attribute, and that is " +
+            "what it posts. The explicit accountRegistered call carries registrationMethod: email " +
+            "everywhere.",
         channel = ScenarioChannel.REACT_NATIVE,
         platform = ScenarioPlatform.BOTH,
     )
@@ -105,9 +111,10 @@ object Scenarios {
         title = "Layout config from ConnectConfig.json is applied",
         action = "Type into the masked field below, then read the value in the posted layout " +
             "message.",
-        expected = "The value arrives masked. The config block is named layoutConfigIos / " +
-            "layoutConfigAndroid; the bridge used to look for a plain \"layoutConfig\" key and so " +
-            "applied nothing at all.",
+        expected = "The value arrives masked. On React Native the config block is named " +
+            "layoutConfigIos / layoutConfigAndroid; the bridge used to look for a plain " +
+            "\"layoutConfig\" key and so applied nothing at all. This app has no bridge: the rules " +
+            "are in ConnectLayoutConfig.json, which the SDK reads directly.",
         channel = ScenarioChannel.REACT_NATIVE,
         platform = ScenarioPlatform.BOTH,
     )
@@ -115,7 +122,8 @@ object Scenarios {
     val ANDROID_COMPILE_CLASSPATH = Scenario(
         key = "android-compile-classpath",
         title = "eocore/tealeaf on the Android compile classpath",
-        action = "Nothing to tap — this one is proven by the app building and running at all.",
+        action = "Nothing to tap — on React Native this one is proven by the app building and " +
+            "running at all.",
         expected = "The Android module compiles against com.ibm.eo / com.tl types. Connect marks " +
             "them runtime-scope in its POM, so they need compileOnly + testCompileOnly entries to " +
             "be visible at compile time.",
@@ -140,40 +148,27 @@ object Scenarios {
         action = "Move between screens in Screen Views and read the referrer on each screenview.",
         expected = "referrer is the screen you came from. The iOS bug set it to the screen's own " +
             "name on every event, which collapses a whole session into one replay step. Android " +
-            "already chained it correctly.",
+            "already chained it correctly. The iOS fix ships in Connect iOS 2.1.37 and later.",
         channel = ScenarioChannel.IOS_NATIVE,
         platform = ScenarioPlatform.IOS,
-        blockedBy = "Fixed in iOS source on 2026-08-20, but the newest published pod " +
-            "(AcousticConnectDebug 2.1.18) was tagged 2026-07-29. Running this today records the " +
-            "failing baseline.",
     )
 
     val WEBVIEW_POST_NOT_REPLAYED_AS_GET = Scenario(
         key = "webview-post-not-replayed-as-get",
         title = "WebView form POST is not replayed as GET",
-        action = "Submit the form in the WebView screen.",
-        expected = "The echo shows method POST. The capture reload used to re-issue the current " +
-            "URL as a GET, so a payment submission came back 405 Method Not Allowed.",
+        action = "Submit the form in the WebView screen, then capture the layout with the result " +
+            "on screen.",
+        expected = "The echo still shows method POST after the capture, and the navigation count " +
+            "does not go up — a replayed page counts even when it ends on an error page. The " +
+            "capture reload used to re-issue the current URL as a GET, so a payment submission " +
+            "came back 405 Method Not Allowed.",
         channel = ScenarioChannel.ANDROID_NATIVE,
         platform = ScenarioPlatform.ANDROID,
-        blockedBy = "This harness does not reproduce the 405, and the shipped SDK test explains " +
-            "why: WebView never calls shouldOverrideUrlLoading for a main-frame form POST, so a " +
-            "normal submission cannot trigger the conversion — the fix's own test drives the " +
-            "hazard directly instead. What this harness DID establish: setting " +
-            "GoogleWebViewEnabled false suppresses WebView instrumentation completely (Found " +
-            "Webview 11 -> 0, RNCWebView nodes 3 -> 0, with the screen demonstrably visited), " +
-            "which is the customer's missing workaround. On connect 11.0.18-beta — which does NOT " +
-            "carry the fix — the POST survives identically, with WebView capture demonstrably " +
-            "engaged (capture JS injected, RNCWebView nodes in the layout) and after an explicit " +
-            "logScreenLayout on the POST result. So a pass here says nothing about the fix. Two " +
-            "earlier leads here have since been measured and can be dropped: WebView discovery " +
-            "does work on this screen (Found Webview fires and RNCWebView nodes appear in the " +
-            "layout) once the WebView is scrolled into the viewport — the zero-hit readings came " +
-            "from capturing while it sat below the fold, which the tree-walk skips by design. " +
-            "What remains real is that the SDK logs \"WebView Id is: null\" for an RN-hosted " +
-            "WebView, so the DOM-capture DCID it waits for can never be matched, and a capture " +
-            "that does find the WebView currently drops the screen's whole layout message. That " +
-            "is a native-SDK defect, tracked separately.",
+        blockedBy = "Connect Android 11.0.19-beta and later skip the reload only for a page whose " +
+            "navigation the SDK saw. It sees navigations through the WebView client it attaches at " +
+            "the first layout capture, so a form submitted before that — this one — is still " +
+            "replayed: on an API 36 emulator the capture here produced the 405. A pass on this " +
+            "card needs a build that also covers that case.",
     )
 
     val ACCESSIBILITY_LABEL_MASKING = Scenario(
@@ -188,7 +183,9 @@ object Scenarios {
             "deliberately: it identifies the element rather than describing it. Needs Connect iOS " +
             "2.1.22+ or Android 11.0.23-beta+ — both published, and AndroidVersion / iOSVersion " +
             "are empty in ConnectConfig.example.json, so an unpinned sample resolves them. " +
-            "Against a pinned older SDK this records the failing baseline instead.",
+            "Against a pinned older SDK this records the failing baseline instead. The address " +
+            "matches the email pattern in MaskValueList in ConnectLayoutConfig.json; without that " +
+            "rule nothing here is masked and every row looks like a leak.",
         channel = ScenarioChannel.NATIVE,
         platform = ScenarioPlatform.BOTH,
     )

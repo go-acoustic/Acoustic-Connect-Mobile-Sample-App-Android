@@ -15,7 +15,8 @@ config files it needs would add maintenance without adding coverage. `sample-xml
 analytics-only and needs no Firebase or AppGallery account to build and run.
 
 Everything that is not UI — credential loading, the signal log, app-state instrumentation, the
-identity view model, the swipe classifier, the Showcase's SDK calls and the card copy — lives in
+identity view model, the swipe classifier, the SDK calls behind every Behaviour card and the card
+copy — lives in
 `shared/` and is compiled into both apps. Read either app to learn the integration; read both to
 see what changes with the UI toolkit.
 
@@ -26,7 +27,7 @@ their element ids and logged screen names, so one set of UI tests drives all of 
 |---|---|---|
 | Push (Compose only) | `tab_notification` | Notification authorization |
 | Identity | `tab_identity` | Log a `loggedIn` or `accountRegistered` identity signal; recent identifiers |
-| Behaviour | `tab_behaviour` | A hub that opens the **Showcase**: one card per capture feature — screen views, taps, gestures, text entry and masking, custom events, signals, exceptions, dialogs, session replay of modals, app state, and runtime capture control |
+| Behaviour | `tab_behaviour` | A hub with two entries. The **Showcase** has one card per capture feature — screen views, taps, gestures, text entry and masking, custom events, signals, exceptions, dialogs, session replay of modals, app state, and runtime capture control. **Verification** has one card per shipped fix, saying what to do and what a fixed build produces; it opens the **WebView POST** check and the **Screen Views** name matrix, which sends every screen-name shape the inferred `pageView` signal has to survive |
 
 Every element a test can address carries the same id in both apps: a Compose `testTag`, published
 as a resource id with `testTagsAsResourceId`, or an XML `android:id`. The full list is
@@ -46,6 +47,7 @@ notification handling, and identity logging across both FCM (Firebase) and HMS (
 | Analytics capture | Enabled by default — events, screenshots, and screen visits out of the box |
 | Identity logging | Log `loggedIn` / `accountRegistered` identity signals and view recent history (last 5 entries) |
 | Behaviour showcase | One card per analytics feature, each showing the SDK call it makes and what it sent |
+| Release verification | One card per shipped fix, a WebView form POST check, and a screen-name matrix sent by navigation and by direct `logScreenview` calls |
 | Dual provider support | FCM via Firebase, HMS via Huawei AppGallery Connect |
 
 ---
@@ -227,8 +229,11 @@ shared/                               # UI-free, compiled into BOTH apps
     contract/SampleId.kt              # Element ids shared with the other platforms' samples
     contract/ScreenName.kt            # Logged screen names
     behaviour/ShowcaseActions.kt      # The Showcase's SDK calls, payloads and result lines
-    behaviour/ScreenViewCases.kt      # Screen-name test matrix
     behaviour/Scenarios.kt            # Registry of verified fixes
+    behaviour/VerificationActions.kt  # Verification's identity-defaults calls
+    behaviour/WebViewPost.kt          # The WebView POST form, echo endpoint and status lines
+    behaviour/ScreenViewCases.kt      # Screen-name test matrix
+    behaviour/ScreenViewActions.kt    # Direct screen-view calls and their result lines
     analytics/SignalLog.kt            # In-memory record of what the app emitted
     analytics/AppStateSignals.kt      # Foreground/background + orientation custom events
     analytics/ScreenViewTrail.kt      # Previous screen, for screen-view referrers
@@ -245,7 +250,7 @@ sample-compose/                       # Compose app: push + analytics
       MainScreen.kt                   # Push / Identity / Behaviour tabs; routes are the logged screen names
       notification/                   # Push authorization UI and permission handling
       identity/IdentityScreen.kt      # Identity logging UI
-      behaviour/                      # Behaviour hub, Showcase, detail screen, replay modals
+      behaviour/                      # Behaviour hub, Showcase, Verification, WebView POST, Screen Views
       appstate/AppStateScreen.kt      # Session / logical page / signal log
       gestures/GestureScreen.kt       # Gesture capture targets
       analytics/ScreenviewEffects.kt  # Compose screen-view emission
@@ -260,7 +265,7 @@ sample-xml/                           # Views app: analytics only, no push
       MainActivity.kt                 # Connect.init + Connect.enable, no ConnectPushConfig
       ui/ScreenFragment.kt            # Logs each screen's screen view, with its referrer
       identity/IdentityFragment.kt    # Identity logging UI
-      behaviour/                      # Behaviour hub, Showcase, detail screen, replay modals
+      behaviour/                      # Behaviour hub, Showcase, Verification, WebView POST, Screen Views
       appstate/AppStateFragment.kt    # Session / logical page / signal log
       gestures/GesturesFragment.kt    # Gesture capture targets
     res/layout/                       # Fragment layouts
@@ -281,8 +286,10 @@ SDK defaults are explained here.
 | `shared/.../ConnectAdvancedConfig.json` | `EnableFragmentLifeCycleListener: false` | The XML app's fragments log their own screen views, under the shared screen names, from `ScreenFragment`. With the listener on, the SDK also logs a screen view named after the fragment class (`ShowcaseFragment`, …) on the first gesture on each fragment, which doubles the screen views and breaks the shared names. The Compose app has no fragments, so the switch does not affect it. |
 | `sample-xml/.../ConnectLayoutConfig.json` | No `MainActivity` entry | An entry with `ScreenChange: false` for the host activity pauses capture on the first touch, and nothing lifts the pause again. |
 | both `ConnectLayoutConfig.json` | `HasCustomMask: true` in `GlobalScreenSettings` | A masked value keeps its shape (`SECRET-1234` → `XXXXXX#9999`) instead of arriving empty, which is what the Showcase's masking card asks you to compare. |
-| `sample-xml/.../ConnectLayoutConfig.json` | `MaskValueList: ["^SECRET-"]` | The Views capture masks by value. |
+| both `ConnectLayoutConfig.json` | `MaskValueList`: `^SECRET-` and an email-address pattern | The Views capture masks by value: the Showcase and Verification masked fields use the `SECRET-` prefix, and the Verification accessibility card shows an email address. |
 | `sample-compose/.../ConnectLayoutConfig.json` | `MaskAccessibilityLabelList` includes `Identifier Value` and `Masked field` | The Compose capture decides masking by a field's label, not its value. |
+| `sample-xml/.../ConnectLayoutConfig.json` | `MaskIdList`: `et_identifier_value`, in `GlobalScreenSettings` | Masks the Identity value by its view id. It sits in the global settings because a per-screen entry is looked up by the activity's class name, and this app has one activity for every screen. |
+| `shared/.../ConnectAdvancedConfig.json` | `GoogleWebViewEnabled: true` | The SDK's default. With it off the SDK never instruments a WebView, so the WebView POST check could not exercise the capture it tests. |
 
 ## Push provider selection
 

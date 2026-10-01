@@ -22,6 +22,9 @@
     <string name="behaviour_showcase_title">Showcase</string>
     <string name="behaviour_showcase_body">What the SDK captures once your app is integrated: screen views, taps, text entry, custom events, signals, dialogs, exceptions and session replay of modals. One card per feature, each with the call it makes and where to read the result.</string>
     <string name="behaviour_open_showcase">Open Showcase</string>
+    <string name="behaviour_verification_title">Verification</string>
+    <string name="behaviour_verification_body">Release-verification checks. Each card verifies one shipped fix against the SDK build this app is running, with the steps to follow and the payload to expect. Intended for regression runs rather than as an integration reference.</string>
+    <string name="behaviour_open_verification">Open Verification</string>
     <string name="behaviour_footnote">Everything here posts to the collector configured in ConnectBasicConfig.properties. Android posts on a foreground timer of about 30 seconds.</string>
 
     <!-- Showcase -->
@@ -72,6 +75,38 @@
     <string name="showcase_capture_disable">Disable SDK</string>
     <string name="showcase_capture_enable">Re-enable SDK</string>
 
+    <!-- Scenario cards, on the Verification screen -->
+    <string name="scenario_do">Do</string>
+    <string name="scenario_expect">Expect</string>
+
+    <!-- Verification -->
+    <string name="verification_header">Verification</string>
+    <string name="verification_intro_title">How to read these cards</string>
+    <string name="verification_intro_body">Each card names one fix, what to do, and what a fixed build produces. Drive the card, then read the message at the collector configured in ConnectBasicConfig.properties — Android posts on a foreground timer of about 30 seconds.</string>
+    <string name="verification_intro_baseline">A card marked \"Baseline only\" has no published artifact carrying its fix. It still runs, deliberately — the failing result is the baseline that makes a later re-run meaningful. Do not read it as a pass.</string>
+    <string name="verification_identity_defaulted">Log identity — omit both optional args</string>
+    <string name="verification_identity_explicit">Log accountRegistered — explicit</string>
+    <string name="verification_masked_label">Masked field</string>
+    <string name="verification_masked_hint">Type a value starting with SECRET-, then wait for the next post. In the layout message the value should be masked per the config\'s Sensitive rules — capitals to X, lowercase to x, digits to 9, symbols to # — not the text you typed.</string>
+    <string name="verification_a11y_address">analyticsp2@test.com</string>
+    <string name="verification_a11y_label">Email address</string>
+    <string name="verification_a11y_row_implicit">1 · no explicit label</string>
+    <string name="verification_a11y_row_explicit">2 · explicit label</string>
+    <string name="verification_a11y_row_value">3 · label + state description</string>
+    <string name="verification_a11y_hint">In each row\'s accessibility object the label should be masked per the config\'s Sensitive rules — lowercase to x, digits to 9, symbols to #. accessibility.id stays readable on purpose.</string>
+    <string name="verification_a11y_field">Masked input (for comparison)</string>
+    <string name="verification_open_webview">Open WebView form POST</string>
+    <string name="verification_modal_body">The two modal cards below each open a dialog in a window of its own — one opaque over the whole screen, one transparent over the screen beneath — the case that produced an empty control tree.</string>
+    <string name="verification_classpath_note">Nothing to verify in this app: the check is the React Native module compiling against com.ibm.eo / com.tl types, which a native app never does. The card is here so the registry reads the same on every platform.</string>
+
+    <!-- WebView POST -->
+    <string name="webview_title">WebView POST</string>
+    <string name="webview_submit">Submit payment (POST)</string>
+    <string name="webview_capture">Capture layout now</string>
+    <string name="webview_capture_hint">Scroll until this button sits near the top of the screen, so the WebView below it is fully in view, then capture. The capture skips views that are off screen, so a WebView below the fold is not captured and the check proves nothing.</string>
+    <string name="webview_reset">Reload form</string>
+    <string name="webview_card_title">WebView</string>
+
     <!-- Showcase detail -->
     <string name="detail_logged_title">Screen view logged</string>
     <string name="detail_logged_body">Opening this screen logged a screen view named:</string>
@@ -81,4 +116,29 @@
     <string name="detail_push_another">Push another</string>
     <string name="detail_chain_limit">Chain limit reached</string>
     <string name="detail_back">Back</string>
+
+    <!-- Screen Views -->
+    <string name="verification_open_screen_views">Open Screen Views</string>
+    <string name="screen_views_header">Screen Views</string>
+    <string name="screen_views_how_title">How this is verified</string>
+    <string name="screen_views_how_body">Every screen view sends a type-2 message carrying the screen name. The platform derives a pageView signal from it; because a mobile screen has no URL, the server-side rule falls back to that name for the signal\'s url.</string>
+    <string name="screen_views_how_drive">So each button below is one test of that fallback. Drive them, then check the subscription\'s inferred pageView definition — valid count should rise and the Missing required field: [url] records should stop.</string>
+    <string name="screen_views_warn">Do not press the Showcase or Verification Log Signal buttons during a run. They send an explicit pageview signal, and inference stands down for a subscription that sends its own — which would read as a pass when it is really a suppression.</string>
+    <string name="screen_views_navigate_title">Navigate — real integration path</string>
+    <string name="screen_views_repeat_note">Navigate back and re-enter to produce repeat views. A repeat of a name still waiting in the SDK\'s queue is dropped as a duplicate until the next post.</string>
+    <string name="screen_views_logs">logs: %1$s</string>
+    <string name="screen_views_direct_title">Screen view — exact name</string>
+    <string name="screen_views_direct_body">Emits a type-2 screenview whose logical page name is the exact string below. The server-side rule uses that name as the inferred pageView\'s url, so each name is a separate test of the fallback. The empty and null names are only reachable here — navigation cannot carry them.</string>
+    <string name="screen_views_direct_android">On Android the SDK treats an empty or null name as no name at all and logs the activity\'s class name instead — MainActivity in this app — so neither arrives as sent. Sent back to back, as Send all does, the second is also dropped as a duplicate of the first while it waits in the queue, so the null line shows ✗.</string>
+    <string name="screen_views_send_all">Send all %1$d names</string>
+
+    <!-- Screen-view case -->
+    <string name="case_logged_title">Logged screen name</string>
+    <string name="case_meta">%1$d characters · this screen\'s name</string>
+    <string name="case_expected_title">Expected result</string>
+    <string name="case_expected_body">The type-2 message should carry screenview.name exactly as shown above, and the inferred pageView signal should carry the same string as signalContent.url — valid, not in the invalid-signal topic.</string>
+    <string name="case_repeat_title">Repeat</string>
+    <string name="case_repeat_body">Re-send the same name through the direct call, to compare the navigation-driven message against an explicit one.</string>
+    <string name="case_relog">Log this name directly</string>
+    <string name="case_push_next">Push deeper — %1$s</string>
 </resources>

@@ -28,6 +28,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.semantics
@@ -43,8 +44,13 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import com.acoustic.connect.android.demo.connect.external.appstate.AppStateScreen
 import com.acoustic.connect.android.demo.connect.external.behaviour.BehaviourScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewCaseScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewsScreen
 import com.acoustic.connect.android.demo.connect.external.behaviour.ShowcaseDetailScreen
 import com.acoustic.connect.android.demo.connect.external.behaviour.ShowcaseScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.VerificationScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.WebViewPostScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.routableScreenViewCases
 import com.acoustic.connect.android.demo.connect.external.contract.SampleId
 import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
 import com.acoustic.connect.android.demo.connect.external.gestures.GestureScreen
@@ -56,6 +62,7 @@ import com.acoustic.connect.android.demo.connect.external.ui.theme.BrandBackgrou
 import com.acoustic.connect.android.demo.connect.external.ui.theme.DarkGrey
 import com.acoustic.connect.android.demo.connect.external.ui.theme.Periwinkle
 import com.acoustic.connect.android.demo.connect.external.ui.theme.Violet
+import com.acoustic.connect.android.demo.connect.external.shared.R as SharedR
 
 /**
  * Route of the Behaviour tab's nested graph. A graph is never a destination itself, so this name
@@ -80,9 +87,23 @@ private val tabs = listOf(
 /** Screens that sit on top of the Behaviour hub and so get a back arrow. */
 private val stackedRoutes: Set<String> = setOf(
     ScreenName.SHOWCASE,
+    ScreenName.VERIFICATION,
+    ScreenName.WEBVIEW_POST,
+    ScreenName.SCREEN_VIEWS,
     ScreenName.GESTURES,
     ScreenName.APP_STATE,
-) + (1..ScreenName.MAX_SHOWCASE_DEPTH).map(ScreenName::showcaseDetail)
+) + (1..ScreenName.MAX_SHOWCASE_DEPTH).map(ScreenName::showcaseDetail) +
+    routableScreenViewCases.mapNotNull { it.name }
+
+/**
+ * The top-bar title for a route. Routes are the logged screen names, which read well as titles
+ * except for the WebView screen, logged as `WebViewPost` like the React Native route it mirrors.
+ */
+@Composable
+private fun titleFor(route: String?): String = when (route) {
+    ScreenName.WEBVIEW_POST -> stringResource(SharedR.string.webview_title)
+    else -> route.orEmpty()
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,7 +121,7 @@ fun MainScreen(navController: NavHostController, notificationViewModel: Notifica
             TopAppBar(
                 title = {
                     Text(
-                        text = route ?: "",
+                        text = titleFor(route),
                         color = Violet,
                         fontWeight = FontWeight.Bold,
                         maxLines = 1,
@@ -152,10 +173,33 @@ fun MainScreen(navController: NavHostController, notificationViewModel: Notifica
             }
             navigation(route = BEHAVIOUR_TAB, startDestination = ScreenName.BEHAVIOUR) {
                 composable(ScreenName.BEHAVIOUR) {
-                    BehaviourScreen(onOpenShowcase = { navController.navigate(ScreenName.SHOWCASE) })
+                    BehaviourScreen(
+                        onOpenShowcase = { navController.navigate(ScreenName.SHOWCASE) },
+                        onOpenVerification = { navController.navigate(ScreenName.VERIFICATION) },
+                    )
                 }
                 composable(ScreenName.SHOWCASE) {
                     ShowcaseScreen(onNavigate = { target -> navController.navigate(target) })
+                }
+                composable(ScreenName.VERIFICATION) {
+                    VerificationScreen(onNavigate = { target -> navController.navigate(target) })
+                }
+                composable(ScreenName.WEBVIEW_POST) {
+                    WebViewPostScreen()
+                }
+                composable(ScreenName.SCREEN_VIEWS) {
+                    ScreenViewsScreen(onOpenCase = { case -> case.name?.let(navController::navigate) })
+                }
+                // One destination per case, routed by the case's name: the SDK logs the route, so
+                // the route has to be the exact name under test.
+                routableScreenViewCases.forEach { case ->
+                    val route = case.name ?: return@forEach
+                    composable(route) {
+                        ScreenViewCaseScreen(
+                            case = case,
+                            onPush = { next -> next.name?.let(navController::navigate) },
+                        )
+                    }
                 }
                 // One destination per depth rather than one with an argument: the SDK logs the
                 // route pattern, so an argument would log the placeholder instead of the name.

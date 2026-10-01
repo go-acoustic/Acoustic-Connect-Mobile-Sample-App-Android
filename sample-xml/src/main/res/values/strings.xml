@@ -33,4 +33,5 @@
     <string name="showcase_taps_result">taps: %1$d · control id: %2$s</string>
     <string name="showcase_text_body">Typing into a field logs a text-change event and the value appears in the captured layout. A value matching a masking rule in ConnectLayoutConfig.json is redacted before it leaves the device.</string>
     <string name="showcase_text_hint">The sample config masks values starting with SECRET- (MaskValueList): capitals become X, lowercase x, digits 9, symbols #. Compare the two fields in the posted layout message.</string>
+    <string name="screen_views_navigate_body">Opens a screen that logs the name with logScreenview as its view is created, which is the path a Views app takes.</string>
 </resources>

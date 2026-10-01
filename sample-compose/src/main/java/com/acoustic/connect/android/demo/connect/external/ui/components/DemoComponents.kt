@@ -158,6 +158,12 @@ fun HintText(text: String) {
     LoggedText(text = text, color = Violet, fontSize = 12.sp, lineHeight = 18.sp)
 }
 
+/** Small grey text under a control — what a case probes, a length. */
+@Composable
+fun CaptionText(text: String) {
+    LoggedText(text = text, color = DarkGrey, fontSize = 11.sp, lineHeight = 16.sp)
+}
+
 @Composable
 fun PrimaryButton(
     title: String,

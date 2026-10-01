@@ -106,12 +106,12 @@ fun ReplayModalCard(transparent: Boolean) {
                         label = stringResource(SharedR.string.showcase_modal_note_label),
                         placeholder = stringResource(SharedR.string.showcase_modal_note_placeholder),
                         value = note,
-                        tag = null,
+                        tag = SampleId.FIELD_REPLAY_MODAL_NOTE,
                         onValueChange = { note = it },
                     )
                     PrimaryButton(
                         title = stringResource(SharedR.string.showcase_modal_primary_action),
-                        tag = null,
+                        tag = SampleId.BTN_REPLAY_MODAL_ACTION,
                         onClick = { actionCount += 1 },
                     )
                     SecondaryButton(

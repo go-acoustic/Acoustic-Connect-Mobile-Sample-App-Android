@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The custom-event demo body: the payload, the send button and its result line. The Showcase puts
+  it in a plain card, Verification in its scenario card. A merge, so it lands in the including column.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout style="@style/Demo.NoteBox">
+        <TextView android:id="@+id/custom_event_payload" style="@style/Demo.Text.Mono" />
+    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_send_custom_event"
+        style="@style/Demo.Button.Primary"
+        android:text="@string/showcase_send_custom_event" />
+    <TextView
+        android:id="@+id/txt_custom_event_result"
+        style="@style/Demo.Text.Mono"
+        android:visibility="gone" />
+
+</merge>

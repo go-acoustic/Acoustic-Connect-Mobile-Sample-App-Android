@@ -100,41 +100,11 @@
             <LinearLayout style="@style/Demo.CardBody">
                 <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_custom_event_title" />
                 <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_custom_event_body" />
-                <LinearLayout style="@style/Demo.NoteBox">
-                    <TextView android:id="@+id/custom_event_payload" style="@style/Demo.Text.Mono" />
-                </LinearLayout>
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_send_custom_event"
-                    style="@style/Demo.Button.Primary"
-                    android:text="@string/showcase_send_custom_event" />
-                <TextView
-                    android:id="@+id/txt_custom_event_result"
-                    style="@style/Demo.Text.Mono"
-                    android:visibility="gone" />
+                <include layout="@layout/view_custom_event_body" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Log Signal -->
-        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
-            <LinearLayout style="@style/Demo.CardBody">
-                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_signal_title" />
-                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_signal_body" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_send_nested_signal"
-                    style="@style/Demo.Button.Primary"
-                    android:text="@string/showcase_send_nested_signal" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_send_flat_signal"
-                    style="@style/Demo.Button.Secondary"
-                    android:text="@string/showcase_send_flat_signal" />
-                <LinearLayout
-                    android:id="@+id/signal_result_box"
-                    style="@style/Demo.NoteBox"
-                    android:visibility="gone">
-                    <TextView android:id="@+id/txt_signal_result" style="@style/Demo.Text.Mono" />
-                </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        <include layout="@layout/view_signal_card" />
 
         <!-- Exceptions -->
         <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
@@ -168,29 +138,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Modal (opaque) -->
-        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
-            <LinearLayout style="@style/Demo.CardBody">
-                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_modal_opaque_title" />
-                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_modal_body" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_open_replay_modal_opaque"
-                    style="@style/Demo.Button.Primary"
-                    android:text="@string/showcase_open_modal" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Modal (transparent) -->
-        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
-            <LinearLayout style="@style/Demo.CardBody">
-                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_modal_transparent_title" />
-                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_modal_body" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_open_replay_modal_transparent"
-                    style="@style/Demo.Button.Primary"
-                    android:text="@string/showcase_open_modal" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        <include layout="@layout/view_replay_modal_cards" />
 
         <!-- App state (Android) -->
         <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
@@ -204,25 +152,7 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Runtime capture control -->
-        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
-            <LinearLayout style="@style/Demo.CardBody">
-                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_capture_title" />
-                <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_capture_body" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_capture_disable"
-                    style="@style/Demo.Button.Primary"
-                    android:text="@string/showcase_capture_disable" />
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_capture_enable"
-                    style="@style/Demo.Button.Primary"
-                    android:text="@string/showcase_capture_enable" />
-                <TextView
-                    android:id="@+id/txt_capture_state"
-                    style="@style/Demo.Text.Mono"
-                    android:visibility="gone" />
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+        <include layout="@layout/view_capture_card" />
 
     </LinearLayout>
 </ScrollView>

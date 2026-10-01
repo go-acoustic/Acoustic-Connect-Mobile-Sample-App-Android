@@ -82,4 +82,17 @@ class ScreenViewCasesTest {
         val shown = describeName(ScreenViewCases.LONG_NAME)
         assertEquals(ScreenViewCases.LONG_NAME.take(45) + "… (300 chars)", shown)
     }
+
+    @Test
+    fun `a case screen pushes the first other navigation case, as React Native does`() {
+        assertEquals("product_details", ScreenViewCases.byId("catalog")?.let(ScreenViewCases::next)?.id)
+        assertEquals("catalog", ScreenViewCases.byId("checkout")?.let(ScreenViewCases::next)?.id)
+    }
+
+    @Test
+    fun `truncation never splits a surrogate pair`() {
+        // 44 ASCII units, then an emoji whose pair would straddle the 45-unit cut.
+        val name = "a".repeat(44) + "🛒".repeat(3)
+        assertEquals("${"a".repeat(44)}… (${name.length} chars)", describeName(name))
+    }
 }

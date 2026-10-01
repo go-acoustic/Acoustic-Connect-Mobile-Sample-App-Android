@@ -32,14 +32,14 @@
                 style="@style/Demo.Field"
                 android:layout_marginTop="4dp">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/modal_note"
+                    android:id="@+id/field_replay_modal_note"
                     style="@style/Demo.FieldInput"
                     android:hint="@string/showcase_modal_note_placeholder" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/modal_primary_action"
+            android:id="@+id/btn_replay_modal_action"
             style="@style/Demo.Button.Primary"
             android:text="@string/showcase_modal_primary_action" />
 

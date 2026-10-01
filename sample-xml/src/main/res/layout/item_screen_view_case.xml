@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One case on the Screen Views screen: its button and the line under it. ScreenViewsFragment gives
+  the button its contract id from ids.xml.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/space_6"
+    android:orientation="vertical"
+    android:showDividers="middle">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/case_button"
+        style="@style/Demo.Button.Secondary" />
+
+    <TextView android:id="@+id/case_caption" style="@style/Demo.Text.Caption" />
+</LinearLayout>

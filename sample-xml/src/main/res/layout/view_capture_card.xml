@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The runtime capture control card, shared by the Showcase and Verification screens; ShowcaseCards
+  binds it.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Demo.Card">
+
+    <LinearLayout style="@style/Demo.CardBody">
+        <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_capture_title" />
+        <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_capture_body" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_disable"
+            style="@style/Demo.Button.Primary"
+            android:text="@string/showcase_capture_disable" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_capture_enable"
+            style="@style/Demo.Button.Primary"
+            android:text="@string/showcase_capture_enable" />
+        <TextView
+            android:id="@+id/txt_capture_state"
+            style="@style/Demo.Text.Mono"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

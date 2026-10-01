@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The two replay-modal cards, shared by the Showcase and Verification screens; ShowcaseCards binds
+  them. A merge, so they land as two cards in the including column.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Modal (opaque) -->
+    <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+        <LinearLayout style="@style/Demo.CardBody">
+            <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_modal_opaque_title" />
+            <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_modal_body" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_replay_modal_opaque"
+                style="@style/Demo.Button.Primary"
+                android:text="@string/showcase_open_modal" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Modal (transparent) -->
+    <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+        <LinearLayout style="@style/Demo.CardBody">
+            <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_modal_transparent_title" />
+            <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_modal_body" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_open_replay_modal_transparent"
+                style="@style/Demo.Button.Primary"
+                android:text="@string/showcase_open_modal" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</merge>

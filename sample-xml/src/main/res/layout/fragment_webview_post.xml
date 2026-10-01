@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hosts the WebView POST form and reports what the WebView saw; see the shared WebViewPost for
+  the mechanism. The status lines carry no contract id, as in React Native.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Demo.Screen">
+
+    <LinearLayout style="@style/Demo.Column">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_webview_post"
+            style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <include layout="@layout/view_scenario_header" />
+                <LinearLayout style="@style/Demo.NoteBox">
+                    <TextView android:id="@+id/webview_status" style="@style/Demo.Text.Mono" />
+                    <TextView android:id="@+id/webview_navigations" style="@style/Demo.Text.Mono" />
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_webview_submit"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/webview_submit" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_webview_capture"
+                    style="@style/Demo.Button.Secondary"
+                    android:text="@string/webview_capture" />
+                <TextView style="@style/Demo.Text.Hint" android:text="@string/webview_capture_hint" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_webview_reset"
+                    style="@style/Demo.Button.Secondary"
+                    android:text="@string/webview_reset" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/webview_card_title" />
+                <WebView
+                    android:id="@+id/webview_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/webview_post_height" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

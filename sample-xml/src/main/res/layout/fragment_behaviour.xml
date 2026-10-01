@@ -17,6 +17,17 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/behaviour_verification_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/behaviour_verification_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_verification"
+                    style="@style/Demo.Button.Secondary"
+                    android:text="@string/behaviour_open_verification" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <TextView style="@style/Demo.Text.Footnote" android:text="@string/behaviour_footnote" />
 
     </LinearLayout>

@@ -41,6 +41,35 @@
         </fragment>
 
         <fragment
+            android:id="@+id/verificationFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.VerificationFragment"
+            android:label="Verification" />
+
+        <!-- Logged as "WebViewPost" (React Native's route name) but titled as React Native titles it. -->
+        <fragment
+            android:id="@+id/webViewPostFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.WebViewPostFragment"
+            android:label="@string/webview_title" />
+
+        <fragment
+            android:id="@+id/screenViewsFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewsFragment"
+            android:label="Screen Views" />
+
+        <!-- One destination for every case; it logs the case's name and shows it as the title. -->
+        <fragment
+            android:id="@+id/screenViewCaseFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewCaseFragment"
+            android:label="{name}">
+            <argument
+                android:name="name"
+                app:argType="string" />
+            <argument
+                android:name="caseId"
+                app:argType="string" />
+        </fragment>
+
+        <fragment
             android:id="@+id/gesturesFragment"
             android:name="com.acoustic.connect.android.demo.connect.external.gestures.GesturesFragment"
             android:label="Gestures" />

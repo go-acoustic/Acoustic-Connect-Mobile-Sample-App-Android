@@ -10,8 +10,7 @@
 package com.acoustic.connect.android.demo.connect.external.behaviour
 
 /**
- * Screen-name test matrix for the inferred `pageView` signal. Reserved: the Screen views screen
- * that renders it comes later.
+ * Screen-name test matrix for the inferred `pageView` signal, rendered by the Screen Views screen.
  *
  * The platform derives a `pageView` signal from every screenview message. That inference was
  * written for web, where the message carries a URL; a mobile screen view has none, so the
@@ -35,8 +34,12 @@ data class ScreenViewCase(
     /** Button label. */
     val label: String,
     /**
-     * The screen name to log. `null` is deliberate: Android stringifies a null logical page name,
-     * so it should arrive as the literal text "null" rather than as absent.
+     * The screen name to log. `null` is deliberate: the React Native bridge stringifies a null
+     * logical page name, so from React Native it arrives as the literal text "null". The native
+     * SDK does not: `logScreenview` treats a null or empty name as "no name given" and logs the
+     * activity's class name instead, so from these apps neither of those two cases reaches the
+     * collector as sent. [probes] keeps the shared wording; the Screen Views screen says what
+     * Android does.
      */
     val name: String?,
     /** What this case probes on the server side. */
@@ -162,16 +165,43 @@ object ScreenViewCases {
     val DIRECT: List<ScreenViewCase> = ALL.filter { it.via == CaseVia.DIRECT || it.via == CaseVia.BOTH }
 
     fun byId(id: String): ScreenViewCase? = ALL.firstOrNull { it.id == id }
+
+    /**
+     * The case a case screen offers to push next. Deliberately not "the next case in order": this
+     * is React Native's `NAV_CASES.find((entry) => entry.id !== caseId)`, so every sample offers
+     * the same push from the same screen. The button exists to deepen the stack, not to walk the
+     * list.
+     */
+    fun next(after: ScreenViewCase): ScreenViewCase? = NAV.firstOrNull { it.id != after.id }
 }
 
 private const val MAX_SHOWN_LENGTH = 48
 private const val SHOWN_PREFIX_LENGTH = 45
 
-/** Renders a name so a blank or null one is visible rather than invisible. */
+/**
+ * Renders a name so a blank or null one is visible rather than invisible. Matches `describeName`
+ * in the React Native sample: lengths are UTF-16 units, as a Kotlin string and a JavaScript one
+ * both count them.
+ */
 fun describeName(name: String?): String = when {
     name == null -> "(null)"
     name.isEmpty() -> "(empty string)"
     name.isBlank() -> "(whitespace ×${name.length})"
-    name.length > MAX_SHOWN_LENGTH -> "${name.take(SHOWN_PREFIX_LENGTH)}… (${name.length} chars)"
+    name.length > MAX_SHOWN_LENGTH -> "${prefixWithin(name, SHOWN_PREFIX_LENGTH)}… (${name.length} chars)"
     else -> name
+}
+
+/**
+ * The longest run of whole code points from the start of [name] that fits in [limit] UTF-16
+ * units. React Native slices 45 units flat, which can split an emoji's surrogate pair; this stops
+ * one short instead. For names without such characters the output is identical.
+ */
+private fun prefixWithin(name: String, limit: Int): String {
+    var end = 0
+    while (end < name.length) {
+        val next = name.offsetByCodePoints(end, 1)
+        if (next > limit) break
+        end = next
+    }
+    return name.substring(0, end)
 }

@@ -18,10 +18,12 @@ import com.acoustic.connect.android.demo.connect.external.ui.ScreenFragment
 import com.acoustic.connect.android.demo.connect.external.shared.R as SharedR
 
 /**
- * Behaviour tab root — the entry point into the analytics half of the SDK. The Showcase is the
- * general-purpose demo: one card per capture feature, written for someone integrating the SDK for
- * the first time. It lives in a stack because several cards need somewhere to navigate to: a
- * screen view is only logged when a screen opens.
+ * Behaviour tab root — a hub with two entry points into the analytics half of the SDK. The
+ * Showcase is the general-purpose demo: one card per capture feature, written for someone
+ * integrating the SDK for the first time. Verification is the release-verification surface: one
+ * card per shipped fix, each stating what to do and what a fixed build produces. Both live in a
+ * stack because several cards need somewhere to navigate to: a screen view is only logged when a
+ * screen opens.
  */
 class BehaviourFragment : ScreenFragment(R.layout.fragment_behaviour) {
 
@@ -32,6 +34,9 @@ class BehaviourFragment : ScreenFragment(R.layout.fragment_behaviour) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<View>(R.id.btn_open_showcase).setOnClickListener {
             findNavController().navigate(R.id.showcaseFragment)
+        }
+        view.findViewById<View>(R.id.btn_open_verification).setOnClickListener {
+            findNavController().navigate(R.id.verificationFragment)
         }
     }
 }

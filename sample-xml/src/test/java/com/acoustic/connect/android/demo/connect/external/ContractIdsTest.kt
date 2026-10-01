@@ -9,6 +9,7 @@
  */
 package com.acoustic.connect.android.demo.connect.external
 
+import com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewCases
 import com.acoustic.connect.android.demo.connect.external.contract.SampleId
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -21,10 +22,17 @@ import java.io.File
  */
 class ContractIdsTest {
 
-    /** Every id declared anywhere in the app's resources — layouts, the tab menu, the nav graph. */
-    private val declaredIds: Set<String> = listOf("layout", "menu", "navigation")
+    /**
+     * Every id declared anywhere in the app's resources — layouts, the tab menu, the nav graph, and
+     * `ids.xml` for the buttons built in code.
+     */
+    private val declaredIds: Set<String> = listOf("layout", "menu", "navigation", "values")
         .flatMap { File("src/main/res/$it").listFiles().orEmpty().toList() }
-        .flatMap { Regex("@\\+id/([a-z0-9_]+)").findAll(it.readText()).map { match -> match.groupValues[1] } }
+        .flatMap { file ->
+            val text = file.readText()
+            Regex("@\\+id/([a-z0-9_]+)").findAll(text).map { it.groupValues[1] } +
+                Regex("<item name=\"([a-z0-9_]+)\" type=\"id\"").findAll(text).map { it.groupValues[1] }
+        }
         .toSet()
 
     /** The contract ids this app renders. The analytics-only sample has no Push tab. */
@@ -53,6 +61,8 @@ class ContractIdsTest {
         SampleId.TXT_SHOWCASE_DIALOG_RESULT,
         SampleId.BTN_OPEN_REPLAY_MODAL_OPAQUE,
         SampleId.BTN_OPEN_REPLAY_MODAL_TRANSPARENT,
+        SampleId.FIELD_REPLAY_MODAL_NOTE,
+        SampleId.BTN_REPLAY_MODAL_ACTION,
         SampleId.BTN_CLOSE_REPLAY_MODAL,
         SampleId.TXT_REPLAY_MODAL_RESULT,
         SampleId.BTN_OPEN_GESTURES,
@@ -62,7 +72,28 @@ class ContractIdsTest {
         SampleId.TXT_CAPTURE_STATE,
         SampleId.BTN_SHOWCASE_PUSH_DETAIL,
         SampleId.BTN_SHOWCASE_BACK,
-    )
+        SampleId.BTN_OPEN_VERIFICATION,
+        SampleId.BTN_IDENTITY_DEFAULTED,
+        SampleId.BTN_IDENTITY_EXPLICIT,
+        SampleId.TXT_IDENTITY_DEFAULTS_RESULT,
+        SampleId.FIELD_MASKED,
+        SampleId.A11Y_IMPLICIT,
+        SampleId.A11Y_EXPLICIT,
+        SampleId.A11Y_VALUE,
+        SampleId.A11Y_FIELD,
+        SampleId.BTN_OPEN_WEBVIEW_POST,
+        SampleId.BTN_WEBVIEW_SUBMIT,
+        SampleId.BTN_WEBVIEW_CAPTURE,
+        SampleId.BTN_WEBVIEW_RESET,
+        SampleId.WEBVIEW_POST,
+        SampleId.BTN_OPEN_SCREEN_VIEWS,
+        SampleId.BTN_SCREENVIEW_SEND_ALL,
+        SampleId.TXT_SCREENVIEW_RESULT,
+        SampleId.BTN_CASE_RELOG,
+        SampleId.TXT_CASE_RELOG_RESULT,
+        SampleId.BTN_CASE_PUSH_NEXT,
+    ) + ScreenViewCases.NAV.map { SampleId.navigateButton(it.id) } +
+        ScreenViewCases.DIRECT.map { SampleId.screenViewButton(it.id) }
 
     @Test
     fun `every contract id this app renders is declared in its resources`() {

@@ -25,7 +25,8 @@ object ScreenName {
     const val SHOWCASE = "Showcase"
     const val VERIFICATION = "Verification"
     const val SCREEN_VIEWS = "Screen Views"
-    const val WEBVIEW_POST = "WebView POST"
+    /** Logged as the route name, as React Native's route carries no name; titled "WebView POST". */
+    const val WEBVIEW_POST = "WebViewPost"
 
     /** Android only: the gesture targets moved here from their own tab. */
     const val GESTURES = "Gestures"

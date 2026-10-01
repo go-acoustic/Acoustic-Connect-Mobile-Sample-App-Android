@@ -28,9 +28,11 @@ class ScenariosTest {
     }
 
     @Test
-    fun `exactly the two unpublished fixes are marked as baselines`() {
+    fun `only the WebView fix is still marked as a baseline`() {
+        // screenview-referrer lost its banner once Connect iOS 2.1.37 shipped the fix, as on iOS.
+        // The WebView one stays: the published fix misses a form submitted before the first capture.
         assertEquals(
-            listOf("screenview-referrer", "webview-post-not-replayed-as-get"),
+            listOf("webview-post-not-replayed-as-get"),
             Scenarios.ALL.filter { it.blockedBy != null }.map { it.key },
         )
     }

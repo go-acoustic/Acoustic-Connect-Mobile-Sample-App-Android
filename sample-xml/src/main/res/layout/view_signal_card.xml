@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Log Signal card, shared by the Showcase and Verification screens; ShowcaseCards
+  binds it.
+-->
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Demo.Card">
+
+    <LinearLayout style="@style/Demo.CardBody">
+        <TextView style="@style/Demo.Text.CardTitle" android:text="@string/showcase_signal_title" />
+        <TextView style="@style/Demo.Text.Body" android:text="@string/showcase_signal_body" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send_nested_signal"
+            style="@style/Demo.Button.Primary"
+            android:text="@string/showcase_send_nested_signal" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_send_flat_signal"
+            style="@style/Demo.Button.Secondary"
+            android:text="@string/showcase_send_flat_signal" />
+        <LinearLayout
+            android:id="@+id/signal_result_box"
+            style="@style/Demo.NoteBox"
+            android:visibility="gone">
+            <TextView android:id="@+id/txt_signal_result" style="@style/Demo.Text.Mono" />
+        </LinearLayout>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

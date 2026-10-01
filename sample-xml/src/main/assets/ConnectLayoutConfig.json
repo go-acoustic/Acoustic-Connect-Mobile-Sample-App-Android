@@ -19,31 +19,13 @@
           "smallCaseAlphabet": "x",
           "symbol": "#"
         },
-        "MaskIdList": [],
-        "MaskValueList": [
-          "^SECRET-"
-        ],
-        "MaskAccessibilityLabelList": []
-      }
-    },
-    "IdentityFragment": {
-      "ScreenChange": true,
-      "DisplayName": "Identity",
-      "CaptureLayoutOn": 2,
-      "CaptureScreenshotOn": 2,
-      "Masking": {
-        "HasMasking": true,
-        "HasCustomMask": false,
-        "Sensitive": {
-          "capitalCaseAlphabet": "X",
-          "number": "9",
-          "smallCaseAlphabet": "x",
-          "symbol": "#"
-        },
         "MaskIdList": [
           "com.acoustic.connect.android.demo.connect.external.xml:id/et_identifier_value"
         ],
-        "MaskValueList": [],
+        "MaskValueList": [
+          "^SECRET-",
+          "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        ],
         "MaskAccessibilityLabelList": []
       }
     }

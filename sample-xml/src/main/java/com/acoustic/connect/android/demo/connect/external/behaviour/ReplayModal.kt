@@ -48,7 +48,7 @@ object ReplayModal {
         val backdrop = if (transparent) R.color.dimmed_backdrop else R.color.brand_background
         dialog.findViewById<View>(R.id.modal_backdrop).setBackgroundColor(ContextCompat.getColor(activity, backdrop))
 
-        val note = dialog.findViewById<TextInputEditText>(R.id.modal_note)
+        val note = dialog.findViewById<TextInputEditText>(R.id.field_replay_modal_note)
         val status = dialog.findViewById<TextView>(R.id.txt_replay_modal_result)
         var actionCount = 0
         fun renderStatus() {
@@ -58,7 +58,7 @@ object ReplayModal {
         renderStatus()
 
         note.doAfterTextChanged { renderStatus() }
-        dialog.findViewById<View>(R.id.modal_primary_action).setOnClickListener {
+        dialog.findViewById<View>(R.id.btn_replay_modal_action).setOnClickListener {
             actionCount += 1
             renderStatus()
         }

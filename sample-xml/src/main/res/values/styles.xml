@@ -81,12 +81,28 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <!-- The upper-case Do / Expect labels on a scenario card. -->
+    <style name="Demo.Text.ScenarioLabel">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
     <!-- Monospaced output: a result line, a payload, a logged name. -->
     <style name="Demo.Text.Mono">
         <item name="android:textColor">@color/violet</item>
         <item name="android:textSize">11sp</item>
         <item name="android:lineSpacingExtra">4sp</item>
         <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <!-- Small grey text under a control: what a case probes, a length. -->
+    <style name="Demo.Text.Caption">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:lineSpacingExtra">5sp</item>
     </style>
 
     <style name="Demo.Text.Hint">

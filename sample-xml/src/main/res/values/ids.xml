@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Screen Views buttons are built in code, one per case, so their contract ids are declared
+  here rather than in a layout. ScreenViewButtons maps each case to its id.
+-->
+<resources>
+    <item name="btn_navigate_catalog" type="id" />
+    <item name="btn_navigate_product_details" type="id" />
+    <item name="btn_navigate_bid_confirmation" type="id" />
+    <item name="btn_navigate_checkout" type="id" />
+    <item name="btn_navigate_reserved_chars" type="id" />
+    <item name="btn_navigate_non_ascii" type="id" />
+    <item name="btn_navigate_long" type="id" />
+    <item name="btn_navigate_url_shaped" type="id" />
+    <item name="btn_navigate_whitespace" type="id" />
+
+    <item name="btn_screenview_reserved_chars" type="id" />
+    <item name="btn_screenview_non_ascii" type="id" />
+    <item name="btn_screenview_long" type="id" />
+    <item name="btn_screenview_url_shaped" type="id" />
+    <item name="btn_screenview_whitespace" type="id" />
+    <item name="btn_screenview_empty" type="id" />
+    <item name="btn_screenview_null" type="id" />
+</resources>

@@ -26,17 +26,20 @@ import com.acoustic.connect.android.demo.connect.external.ui.components.DemoCard
 import com.acoustic.connect.android.demo.connect.external.ui.components.DemoScreen
 import com.acoustic.connect.android.demo.connect.external.ui.components.LogoHeader
 import com.acoustic.connect.android.demo.connect.external.ui.components.PrimaryButton
+import com.acoustic.connect.android.demo.connect.external.ui.components.SecondaryButton
 import com.acoustic.connect.android.demo.connect.external.ui.theme.DarkGrey
 import com.acoustic.connect.android.demo.connect.external.shared.R as SharedR
 
 /**
- * Behaviour tab root — the entry point into the analytics half of the SDK. The Showcase is the
- * general-purpose demo: one card per capture feature, written for someone integrating the SDK for
- * the first time. It lives in a stack because several cards need somewhere to navigate to: a
- * screen view is only logged on a real navigation.
+ * Behaviour tab root — a hub with two entry points into the analytics half of the SDK. The
+ * Showcase is the general-purpose demo: one card per capture feature, written for someone
+ * integrating the SDK for the first time. Verification is the release-verification surface: one
+ * card per shipped fix, each stating what to do and what a fixed build produces. Both live in a
+ * stack because several cards need somewhere to navigate to: a screen view is only logged on a
+ * real navigation.
  */
 @Composable
-fun BehaviourScreen(onOpenShowcase: () -> Unit) {
+fun BehaviourScreen(onOpenShowcase: () -> Unit, onOpenVerification: () -> Unit) {
     ScreenviewUnloadEffect(ScreenName.BEHAVIOUR)
 
     DemoScreen {
@@ -48,6 +51,15 @@ fun BehaviourScreen(onOpenShowcase: () -> Unit) {
                 title = stringResource(SharedR.string.behaviour_open_showcase),
                 tag = SampleId.BTN_OPEN_SHOWCASE,
                 onClick = onOpenShowcase,
+            )
+        }
+
+        DemoCard(title = stringResource(SharedR.string.behaviour_verification_title)) {
+            BodyText(stringResource(SharedR.string.behaviour_verification_body))
+            SecondaryButton(
+                title = stringResource(SharedR.string.behaviour_open_verification),
+                tag = SampleId.BTN_OPEN_VERIFICATION,
+                onClick = onOpenVerification,
             )
         }
 

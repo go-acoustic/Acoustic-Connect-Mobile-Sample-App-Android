@@ -11,4 +11,6 @@
     <string name="showcase_taps_result">taps: %1$d · layout id: %2$s</string>
     <string name="showcase_text_body">Each LoggedOutlinedTextField is captured in the screen\'s layout as its own control. A field whose label is listed in MaskAccessibilityLabelList in ConnectLayoutConfig.json is masked before the layout leaves the device.</string>
     <string name="showcase_text_hint">The sample config lists the second field\'s label, Masked field, in MaskAccessibilityLabelList. Compare the two fields\' entries in the posted layout message.</string>
+    <string name="screen_views_navigate_body">Opens a destination whose route is the name — ConnectWrapper logs a destination\'s route as its screen name, which is the path a Compose app takes.</string>
+    <string name="screen_views_blank_route">Navigation rejects a blank route, so this case cannot be a Compose destination. The exact-name card below sends it.</string>
 </resources>
