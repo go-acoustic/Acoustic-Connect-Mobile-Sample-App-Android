@@ -20,7 +20,8 @@
           "symbol": "#"
         },
         "MaskIdList": [
-          "com.acoustic.connect.android.demo.connect.external.xml:id/et_identifier_value"
+          "com.acoustic.connect.android.demo.connect.external.xml:id/et_identifier_value",
+          "com.acoustic.connect.android.demo.connect.external.xml:id/mask_rules_card"
         ],
         "MaskValueList": [
           "^SECRET-",

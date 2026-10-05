@@ -190,6 +190,27 @@ object Scenarios {
         platform = ScenarioPlatform.BOTH,
     )
 
+    val MASKING_VALUE_ID_RULES = Scenario(
+        key = "masking-value-id-rules",
+        title = "Masking applies value, id and password rules",
+        action = "Open this screen, type a value starting with SECRET- into the last field, then " +
+            "tap the send button. Read each row in the posted layout message, and the screenshot " +
+            "that comes with the tap.",
+        expected = "Every row arrives masked per the config's Sensitive rules: the address as " +
+            "xxxxxxxxxx9#xxxx#xxx whether or not it has a label, the card number as 9999 9999 " +
+            "9999 9999, the password as the dots on screen, never the typed text. No id, cssId " +
+            "or tap target carries the address, and the tap's screenshot obscures every masked " +
+            "row, the typed one included. Compose capture used to apply only " +
+            "MaskAccessibilityLabelList, so the address went out verbatim in currState and inside " +
+            "generated ids, a password field went out as typed, and typed text showed in tap " +
+            "screenshots. The Views capture applied the value and id rules but also sent a " +
+            "password field as typed. Both need a Connect Android build newer than 11.1.15-beta. " +
+            "The address and the SECRET- prefix match " +
+            "MaskValueList and the card number matches MaskIdList in ConnectLayoutConfig.json.",
+        channel = ScenarioChannel.ANDROID_NATIVE,
+        platform = ScenarioPlatform.ANDROID,
+    )
+
     /** Every scenario, in the React Native registry's order. */
     val ALL: List<Scenario> = listOf(
         CUSTOM_EVENT_VALUE_TYPES,
@@ -201,5 +222,6 @@ object Scenarios {
         SCREENVIEW_REFERRER,
         WEBVIEW_POST_NOT_REPLAYED_AS_GET,
         ACCESSIBILITY_LABEL_MASKING,
+        MASKING_VALUE_ID_RULES,
     )
 }

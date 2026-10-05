@@ -15,13 +15,13 @@ import org.junit.Test
 class ScenariosTest {
 
     @Test
-    fun `the registry holds the nine shared scenarios in order`() {
+    fun `the registry holds the ten shared scenarios in order`() {
         assertEquals(
             listOf(
                 "custom-event-value-types", "signal-nested-json", "identity-login-method-default",
                 "layout-config-applied", "android-compile-classpath", "replay-captures-modal",
                 "screenview-referrer", "webview-post-not-replayed-as-get",
-                "accessibility-label-masking",
+                "accessibility-label-masking", "masking-value-id-rules",
             ),
             Scenarios.ALL.map { it.key },
         )

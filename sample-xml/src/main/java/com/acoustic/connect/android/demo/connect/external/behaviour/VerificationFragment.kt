@@ -42,6 +42,7 @@ class VerificationFragment : ScreenFragment(R.layout.fragment_verification) {
             R.id.card_identity_defaults to Scenarios.IDENTITY_LOGIN_METHOD_DEFAULT,
             R.id.card_layout_config to Scenarios.LAYOUT_CONFIG_APPLIED,
             R.id.card_accessibility to Scenarios.ACCESSIBILITY_LABEL_MASKING,
+            R.id.card_masking_rules to Scenarios.MASKING_VALUE_ID_RULES,
             R.id.card_webview_post to Scenarios.WEBVIEW_POST_NOT_REPLAYED_AS_GET,
             R.id.card_replay_modal to Scenarios.REPLAY_CAPTURES_MODAL,
             R.id.card_compile_classpath to Scenarios.ANDROID_COMPILE_CLASSPATH,
@@ -68,6 +69,11 @@ class VerificationFragment : ScreenFragment(R.layout.fragment_verification) {
             view.findViewById(R.id.a11y_value),
             getString(SharedR.string.verification_a11y_address),
         )
+
+        // The tap is the capture: its screenshot is what shows whether typed text is obscured.
+        view.onClick(R.id.btn_mask_rules_send) {
+            view.showResult(R.id.txt_mask_rules_result, getString(SharedR.string.verification_rules_sent))
+        }
 
         view.onClick(R.id.btn_open_screen_views) { findNavController().navigate(R.id.screenViewsFragment) }
         view.onClick(R.id.btn_open_webview_post) { findNavController().navigate(R.id.webViewPostFragment) }

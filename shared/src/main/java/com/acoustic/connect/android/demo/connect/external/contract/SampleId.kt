@@ -87,6 +87,14 @@ object SampleId {
     const val A11Y_EXPLICIT = "a11y_explicit"
     const val A11Y_VALUE = "a11y_value"
     const val A11Y_FIELD = "a11y_field"
+    const val MASK_RULES_LABELLED = "mask_rules_labelled"
+    const val MASK_RULES_UNLABELLED = "mask_rules_unlabelled"
+    const val MASK_RULES_CARD = "mask_rules_card"
+    const val MASK_RULES_EMAIL_FIELD = "mask_rules_email_field"
+    const val MASK_RULES_PASSWORD = "mask_rules_password"
+    const val MASK_RULES_TYPED = "mask_rules_typed"
+    const val BTN_MASK_RULES_SEND = "btn_mask_rules_send"
+    const val TXT_MASK_RULES_RESULT = "txt_mask_rules_result"
 
     // WebView POST. React Native also has `txt_webview_unavailable` for a host app
     // without a WebView; Android always has one, so like iOS it is not declared — a locator that

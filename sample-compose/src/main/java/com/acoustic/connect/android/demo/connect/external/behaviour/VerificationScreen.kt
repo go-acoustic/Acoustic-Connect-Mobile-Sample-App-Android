@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedText
@@ -82,6 +83,8 @@ fun VerificationScreen(onNavigate: (String) -> Unit) {
         MaskedFieldCard()
 
         AccessibilityMaskCard()
+
+        MaskingRulesCard()
 
         CaptureControlCard()
 
@@ -187,6 +190,73 @@ private fun AccessibilityMaskCard() {
             tag = SampleId.A11Y_FIELD,
             onValueChange = { typed = it },
         )
+    }
+}
+
+/**
+ * Checks that value, id and password rules reach every captured surface, not only the
+ * accessibility label: the layout text, generated ids, tap targets and the tap's screenshot.
+ */
+@Composable
+private fun MaskingRulesCard() {
+    val address = stringResource(SharedR.string.verification_a11y_address)
+    val savedPassword = stringResource(SharedR.string.verification_rules_password)
+    // Filled in from the start, so the layout captured when the screen opens carries the values.
+    var email by rememberSaveable { mutableStateOf(address) }
+    var password by rememberSaveable { mutableStateOf(savedPassword) }
+    var typed by rememberSaveable { mutableStateOf("") }
+    var sent by rememberSaveable { mutableStateOf(false) }
+    ScenarioCard(Scenarios.MASKING_VALUE_ID_RULES) {
+        AccessibilityRow(stringResource(SharedR.string.verification_rules_row_labelled)) {
+            AddressText(
+                address,
+                tag = SampleId.MASK_RULES_LABELLED,
+                contentDescription = stringResource(SharedR.string.verification_rules_label),
+            )
+        }
+        AccessibilityRow(stringResource(SharedR.string.verification_rules_row_unlabelled)) {
+            AddressText(address, tag = SampleId.MASK_RULES_UNLABELLED)
+        }
+        AccessibilityRow(stringResource(SharedR.string.verification_rules_row_card)) {
+            // Compose ids are generated from the label, so MaskIdList matches "Card_number".
+            AddressText(
+                stringResource(SharedR.string.verification_rules_card),
+                tag = SampleId.MASK_RULES_CARD,
+                contentDescription = stringResource(SharedR.string.verification_rules_card_label),
+            )
+        }
+        DemoTextField(
+            label = stringResource(SharedR.string.verification_rules_email_field),
+            placeholder = address,
+            value = email,
+            tag = SampleId.MASK_RULES_EMAIL_FIELD,
+            maskLabel = stringResource(SharedR.string.verification_rules_email_field),
+            onValueChange = { email = it },
+        )
+        DemoTextField(
+            label = stringResource(SharedR.string.verification_rules_password_field),
+            placeholder = "",
+            value = password,
+            tag = SampleId.MASK_RULES_PASSWORD,
+            maskLabel = stringResource(SharedR.string.verification_rules_password_field),
+            visualTransformation = PasswordVisualTransformation(),
+            onValueChange = { password = it },
+        )
+        DemoTextField(
+            label = stringResource(SharedR.string.verification_rules_typed_field),
+            placeholder = stringResource(SharedR.string.showcase_masked_placeholder),
+            value = typed,
+            tag = SampleId.MASK_RULES_TYPED,
+            maskLabel = stringResource(SharedR.string.verification_rules_typed_field),
+            onValueChange = { typed = it },
+        )
+        PrimaryButton(
+            title = stringResource(SharedR.string.verification_rules_send),
+            tag = SampleId.BTN_MASK_RULES_SEND,
+            onClick = { sent = true },
+        )
+        if (sent) MonoText(stringResource(SharedR.string.verification_rules_sent), tag = SampleId.TXT_MASK_RULES_RESULT)
+        NoteBox { HintText(stringResource(SharedR.string.verification_rules_hint)) }
     }
 }
 

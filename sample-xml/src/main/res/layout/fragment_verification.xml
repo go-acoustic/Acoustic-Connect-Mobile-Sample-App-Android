@@ -142,6 +142,84 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!--
+          Value, id and password rules: the address with and without a label, a card number the
+          id rule matches, an email and a password field filled in from the start, a field to type
+          into, and a button whose text the value rule matches.
+        -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_masking_rules"
+            style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <include layout="@layout/view_scenario_header" />
+                <TextView style="@style/Demo.Text.Label" android:text="@string/verification_rules_row_labelled" />
+                <TextView
+                    android:id="@+id/mask_rules_labelled"
+                    style="@style/Demo.Text.Mono"
+                    android:contentDescription="@string/verification_rules_label"
+                    android:text="@string/verification_a11y_address"
+                    android:textSize="13sp" />
+                <TextView style="@style/Demo.Text.Label" android:text="@string/verification_rules_row_unlabelled" />
+                <TextView
+                    android:id="@+id/mask_rules_unlabelled"
+                    style="@style/Demo.Text.Mono"
+                    android:text="@string/verification_a11y_address"
+                    android:textSize="13sp" />
+                <TextView style="@style/Demo.Text.Label" android:text="@string/verification_rules_row_card" />
+                <TextView
+                    android:id="@+id/mask_rules_card"
+                    style="@style/Demo.Text.Mono"
+                    android:contentDescription="@string/verification_rules_card_label"
+                    android:text="@string/verification_rules_card"
+                    android:textSize="13sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView style="@style/Demo.Text.Label" android:text="@string/verification_rules_email_field" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Demo.Field"
+                        android:layout_marginTop="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/mask_rules_email_field"
+                            style="@style/Demo.FieldInput"
+                            android:text="@string/verification_a11y_address" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView style="@style/Demo.Text.Label" android:text="@string/verification_rules_password_field" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Demo.Field"
+                        android:layout_marginTop="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/mask_rules_password"
+                            style="@style/Demo.FieldInput"
+                            android:inputType="textPassword"
+                            android:text="@string/verification_rules_password" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                    <TextView style="@style/Demo.Text.Label" android:text="@string/verification_rules_typed_field" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Demo.Field"
+                        android:layout_marginTop="4dp">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/mask_rules_typed"
+                            style="@style/Demo.FieldInput"
+                            android:hint="@string/showcase_masked_placeholder" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_mask_rules_send"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/verification_rules_send" />
+                <TextView
+                    android:id="@+id/txt_mask_rules_result"
+                    style="@style/Demo.Text.Mono"
+                    android:text="@string/verification_rules_sent"
+                    android:visibility="gone" />
+                <LinearLayout style="@style/Demo.NoteBox">
+                    <TextView style="@style/Demo.Text.Hint" android:text="@string/verification_rules_hint" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <include layout="@layout/view_capture_card" />
 
         <!-- WebView POST -->

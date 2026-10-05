@@ -41,6 +41,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedButton
@@ -228,6 +229,7 @@ fun DemoTextField(
     value: String,
     tag: String?,
     maskLabel: String? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     onValueChange: (String) -> Unit,
 ) {
     LoggedOutlinedTextField(
@@ -245,6 +247,7 @@ fun DemoTextField(
             focusedBorderColor = Periwinkle,
             unfocusedBorderColor = MiddleGrey,
         ),
+        visualTransformation = visualTransformation,
         maskLabel = maskLabel,
     )
 }
