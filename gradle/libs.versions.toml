@@ -31,7 +31,7 @@ constraintlayout = "2.1.4"
 # build: sample-compose on connect-push, sample-xml on the analytics-only connect. Every beta and GA
 # build commits this line at the version it has just published (pin-repo-samples.sh), the publish
 # pipeline rewrites it in the public copy, and the e2e job injects into it — do not bump it by hand.
-connectSdk = "11.1.17-beta"
+connectSdk = "11.1.18-beta"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
