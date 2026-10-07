@@ -38,14 +38,14 @@ dependencyResolutionManagement {
 }
 
 
-rootProject.name = "Connect Demo Application"
-include(":app")
+rootProject.name = "Connect Sample App"
+include(":shared", ":sample-compose", ":sample-xml")
  
 // ── Local SDK for development ─────────────────────────────────────────────────
-// `./gradlew :app:assembleDebug -PconnectSdk=local` builds this sample against the in-tree
+// `./gradlew :sample-compose:assembleDebug -PconnectSdk=local` builds the samples against the in-tree
 // SDK source (AndroidSrc/AndroidStudioConnect) instead of the published Maven artifacts, so
 // SDK changes can be run and debugged here without publishing anything. Without the property
-// the sample resolves `connectPush` from Maven Central exactly as a partner's clone does, and
+// the samples resolve the SDK from Maven Central exactly as a partner's clone does, and
 // in a standalone clone of this repo the block is inert because the property is never set.
 if (providers.gradleProperty("connectSdk").orNull == "local") {
     val sdkRoot = file("../../../AndroidSrc/AndroidStudioConnect")

@@ -1,0 +1,6 @@
+<resources>
+    <dimen name="text_small">12sp</dimen>
+    <dimen name="text_medium">16sp</dimen>
+    <!-- Tall enough for the form and the echoed response, as in the Compose sample. -->
+    <dimen name="webview_post_height">420dp</dimen>
+</resources>

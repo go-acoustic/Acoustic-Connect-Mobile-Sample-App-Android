@@ -1,0 +1,34 @@
+{
+  "AutoLayout": {
+    "GlobalScreenSettings": {
+      "ScreenChange": true,
+      "DisplayName": "",
+      "CaptureLayoutDelay": 500,
+      "ScreenShot": true,
+      "NumberOfWebViews": 0,
+      "CaptureUserEvents": true,
+      "CaptureScreenVisits": true,
+      "CaptureLayoutOn": 2,
+      "CaptureScreenshotOn": 2,
+      "Masking": {
+        "HasMasking": true,
+        "HasCustomMask": true,
+        "Sensitive": {
+          "capitalCaseAlphabet": "X",
+          "number": "9",
+          "smallCaseAlphabet": "x",
+          "symbol": "#"
+        },
+        "MaskIdList": [
+          "com.acoustic.connect.android.demo.connect.external.xml:id/et_identifier_value",
+          "com.acoustic.connect.android.demo.connect.external.xml:id/mask_rules_card"
+        ],
+        "MaskValueList": [
+          "^SECRET-",
+          "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        ],
+        "MaskAccessibilityLabelList": []
+      }
+    }
+  }
+}

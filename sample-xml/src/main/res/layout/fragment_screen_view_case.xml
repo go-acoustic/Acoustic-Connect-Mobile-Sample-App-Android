@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The screen for one screen-name case; ScreenViewCaseFragment fills it from the shared matrix. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Demo.Screen">
+
+    <LinearLayout style="@style/Demo.Column">
+
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/case_logged_title" />
+                <TextView
+                    android:id="@+id/case_name"
+                    style="@style/Demo.Text.Mono"
+                    android:textSize="12sp" />
+                <TextView android:id="@+id/case_meta" style="@style/Demo.Text.Caption" />
+                <TextView android:id="@+id/case_probes" style="@style/Demo.Text.Body" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/case_expected_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/case_expected_body" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/case_repeat_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/case_repeat_body" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_case_relog"
+                    style="@style/Demo.Button.Primary"
+                    android:text="@string/case_relog" />
+                <TextView
+                    android:id="@+id/txt_case_relog_result"
+                    style="@style/Demo.Text.Mono"
+                    android:visibility="gone" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_case_push_next"
+                    style="@style/Demo.Button.Secondary"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

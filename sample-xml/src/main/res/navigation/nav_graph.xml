@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Destination labels are the logged screen names, so the toolbar reads what the collector
+  receives. Each fragment logs its own screen view under the same name.
+-->
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/tab_identity">
+
+    <fragment
+        android:id="@+id/tab_identity"
+        android:name="com.acoustic.connect.android.demo.connect.external.identity.IdentityFragment"
+        android:label="Identity" />
+
+    <!-- The Behaviour tab is a stack: the hub, and the screens its cards open. -->
+    <navigation
+        android:id="@+id/tab_behaviour"
+        app:startDestination="@id/behaviourFragment">
+
+        <fragment
+            android:id="@+id/behaviourFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.BehaviourFragment"
+            android:label="Behaviour" />
+
+        <fragment
+            android:id="@+id/showcaseFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.ShowcaseFragment"
+            android:label="Showcase" />
+
+        <fragment
+            android:id="@+id/showcaseDetailFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.ShowcaseDetailFragment"
+            android:label="{name}">
+            <argument
+                android:name="name"
+                app:argType="string" />
+            <argument
+                android:name="depth"
+                app:argType="integer" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/verificationFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.VerificationFragment"
+            android:label="Verification" />
+
+        <!-- Logged as "WebViewPost" (React Native's route name) but titled as React Native titles it. -->
+        <fragment
+            android:id="@+id/webViewPostFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.WebViewPostFragment"
+            android:label="@string/webview_title" />
+
+        <fragment
+            android:id="@+id/screenViewsFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewsFragment"
+            android:label="Screen Views" />
+
+        <!-- One destination for every case; it logs the case's name and shows it as the title. -->
+        <fragment
+            android:id="@+id/screenViewCaseFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewCaseFragment"
+            android:label="{name}">
+            <argument
+                android:name="name"
+                app:argType="string" />
+            <argument
+                android:name="caseId"
+                app:argType="string" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/gesturesFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.gestures.GesturesFragment"
+            android:label="Gestures" />
+
+        <fragment
+            android:id="@+id/appStateFragment"
+            android:name="com.acoustic.connect.android.demo.connect.external.appstate.AppStateFragment"
+            android:label="App state" />
+    </navigation>
+
+</navigation>

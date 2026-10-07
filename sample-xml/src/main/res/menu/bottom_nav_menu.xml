@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Item ids are the shared contract's tab ids, and match the destinations in nav_graph.xml, which is
+  how setupWithNavController pairs them. The analytics-only sample has no Push tab, so there is no
+  tab_notification here.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/tab_identity"
+        android:icon="@drawable/ic_tab_identity"
+        android:title="@string/tab_identity" />
+
+    <item
+        android:id="@+id/tab_behaviour"
+        android:icon="@drawable/ic_tab_app_state"
+        android:title="@string/tab_behaviour" />
+
+</menu>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Card order follows the React Native and iOS Screen Views screens. The per-case buttons are built
+  by ScreenViewsFragment into the two lists, from the shared ScreenViewCases matrix.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Demo.Screen">
+
+    <LinearLayout style="@style/Demo.Column">
+
+        <include layout="@layout/view_logo_header" />
+
+        <!-- How this is verified -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/screen_views_how_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/screen_views_how_body" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/screen_views_how_drive" />
+                <LinearLayout
+                    style="@style/Demo.NoteBox"
+                    android:background="@drawable/bg_note_accent">
+                    <TextView style="@style/Demo.Text.Hint" android:text="@string/screen_views_warn" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Navigate — real integration path -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout
+                android:id="@+id/screen_views_navigate_list"
+                style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/screen_views_navigate_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/screen_views_navigate_body" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/screen_views_repeat_note" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Screen view — exact name -->
+        <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
+            <LinearLayout
+                android:id="@+id/screen_views_direct_list"
+                style="@style/Demo.CardBody">
+                <TextView style="@style/Demo.Text.CardTitle" android:text="@string/screen_views_direct_title" />
+                <TextView style="@style/Demo.Text.Body" android:text="@string/screen_views_direct_body" />
+                <LinearLayout style="@style/Demo.NoteBox">
+                    <TextView style="@style/Demo.Text.Hint" android:text="@string/screen_views_direct_android" />
+                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_screenview_send_all"
+                    style="@style/Demo.Button.Primary" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>
