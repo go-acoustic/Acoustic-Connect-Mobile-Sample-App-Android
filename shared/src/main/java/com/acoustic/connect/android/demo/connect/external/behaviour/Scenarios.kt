@@ -11,8 +11,8 @@ package com.acoustic.connect.android.demo.connect.external.behaviour
 
 /**
  * Registry of the fixes the Verification screen checks, and — just as important — whether each one
- * is actually verifiable against the SDK build the app is running. Reserved: the Verification
- * screen that renders it comes later.
+ * is actually verifiable against the SDK build the app is running. The Verification screen renders
+ * it.
  *
  * The registry is shared with the React Native and iOS samples — keys, titles, channels and order
  * are identical, so a scenario key quoted in a support thread means the same card everywhere. That
@@ -161,14 +161,12 @@ object Scenarios {
         expected = "The echo still shows method POST after the capture, and the navigation count " +
             "does not go up — a replayed page counts even when it ends on an error page. The " +
             "capture reload used to re-issue the current URL as a GET, so a payment submission " +
-            "came back 405 Method Not Allowed.",
+            "came back 405 Method Not Allowed. Needs Connect Android 11.1.9-beta or later " +
+            "(11.1.17 GA): 11.0.19-beta to 11.1.8-beta skipped the reload only for a page whose " +
+            "navigation the SDK saw, so a form submitted before the first layout capture — this " +
+            "one — was still replayed.",
         channel = ScenarioChannel.ANDROID_NATIVE,
         platform = ScenarioPlatform.ANDROID,
-        blockedBy = "Connect Android 11.0.19-beta and later skip the reload only for a page whose " +
-            "navigation the SDK saw. It sees navigations through the WebView client it attaches at " +
-            "the first layout capture, so a form submitted before that — this one — is still " +
-            "replayed: on an API 36 emulator the capture here produced the 405. A pass on this " +
-            "card needs a build that also covers that case.",
     )
 
     val ACCESSIBILITY_LABEL_MASKING = Scenario(
