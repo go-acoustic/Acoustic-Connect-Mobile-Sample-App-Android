@@ -28,6 +28,9 @@ object ScreenName {
     /** Logged as the route name, as React Native's route carries no name; titled "WebView POST". */
     const val WEBVIEW_POST = "WebViewPost"
 
+    /** The replay modal on Showcase and Verification, named as the iOS sample's modal screen. */
+    const val REPLAY_MODAL = "Replay modal"
+
     /** Android only: the gesture targets moved here from their own tab. */
     const val GESTURES = "Gestures"
 

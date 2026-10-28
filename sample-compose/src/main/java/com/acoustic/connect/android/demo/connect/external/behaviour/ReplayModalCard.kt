@@ -32,10 +32,11 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedDialog
 import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedText
 import com.acoustic.connect.android.demo.connect.external.contract.SampleId
+import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
 import com.acoustic.connect.android.demo.connect.external.ui.components.BodyText
 import com.acoustic.connect.android.demo.connect.external.ui.components.DemoCard
 import com.acoustic.connect.android.demo.connect.external.ui.components.DemoTextField
@@ -55,7 +56,9 @@ private val DimmedBackdrop = Color(0x731F1E5D)
  * A Compose `Dialog` does not render inline: it opens a window of its own with its own
  * composition, outside the activity's view tree and outside ConnectWrapper. That makes it the
  * Android counterpart of React Native's `<Modal>` — the case where layout capture has to find
- * content that is not under the screen it is capturing. The opaque variant covers the screen; the
+ * content that is not under the screen it is capturing. `LoggedDialog` captures it as a screen of
+ * its own, "Replay modal": a LOAD when it opens, a layout of its window once its content settles and
+ * after each change, and an UNLOAD when it closes. The opaque variant covers the screen; the
  * transparent one dims it and leaves it visible behind the sheet.
  *
  * The controls are deliberately varied — text, an input, two buttons and a status line — so a
@@ -80,9 +83,10 @@ fun ReplayModalCard(transparent: Boolean) {
     }
 
     if (visible) {
-        Dialog(
+        LoggedDialog(
             onDismissRequest = { visible = false },
             properties = DialogProperties(usePlatformDefaultWidth = false),
+            logicalPageName = ScreenName.REPLAY_MODAL,
         ) {
             Box(
                 modifier = Modifier
