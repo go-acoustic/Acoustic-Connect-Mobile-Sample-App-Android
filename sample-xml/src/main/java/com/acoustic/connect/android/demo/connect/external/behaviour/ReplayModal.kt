@@ -61,6 +61,7 @@ object ReplayModal {
         dialog.findViewById<View>(R.id.btn_replay_modal_action).setOnClickListener {
             actionCount += 1
             renderStatus()
+            Connect.logDialogLayout(activity, dialog)
         }
         dialog.findViewById<View>(R.id.btn_close_replay_modal).setOnClickListener { dialog.dismiss() }
         dialog.setOnDismissListener { if (current?.get() === dialog) current = null }
