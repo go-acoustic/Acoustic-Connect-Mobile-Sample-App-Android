@@ -223,6 +223,7 @@ shared/                               # UI-free, compiled into BOTH apps
   src/main/assets/
     ConnectBasicConfig.properties     # AppKey + PostMessageUrl — single source of truth
     ConnectAdvancedConfig.json        # SDK feature switches
+    connect-profiles/                 # Named SDK configurations a test picks at launch
   src/main/res/values/strings_behaviour.xml  # Card copy both apps display
   src/main/java/.../
     AcousticCredentials.kt            # Thin loader that reads ConnectBasicConfig.properties
@@ -238,6 +239,8 @@ shared/                               # UI-free, compiled into BOTH apps
     analytics/AppStateSignals.kt      # Foreground/background + orientation custom events
     analytics/ScreenViewTrail.kt      # Previous screen, for screen-view referrers
     identity/IdentityViewModel.kt     # logIdentificationEvent, history (last 5)
+    profile/ConnectProfile.kt         # One profile file: its overrides and how they are written
+    profile/ConnectProfiles.kt        # Picks the launch's profile and applies it to the SDK
     gestures/SwipeName.kt             # Swipe-direction classifier
 
 sample-compose/                       # Compose app: push + analytics
@@ -290,6 +293,58 @@ SDK defaults are explained here.
 | `sample-compose/.../ConnectLayoutConfig.json` | `MaskAccessibilityLabelList` includes `Identifier Value` and `Masked field` | The Compose capture decides masking by a field's label, not its value. |
 | `sample-xml/.../ConnectLayoutConfig.json` | `MaskIdList`: `et_identifier_value`, in `GlobalScreenSettings` | Masks the Identity value by its view id. It sits in the global settings because a per-screen entry is looked up by the activity's class name, and this app has one activity for every screen. |
 | `shared/.../ConnectAdvancedConfig.json` | `GoogleWebViewEnabled: true` | The SDK's default. With it off the SDK never instruments a WebView, so the WebView POST check could not exercise the capture it tests. |
+
+## SDK config profiles
+
+A test can launch either app under a named SDK configuration, so one build runs under several. The
+name goes in the string extra `connectProfile` of the launching intent. Start from a stopped process:
+
+```bash
+# Compose app
+adb shell am force-stop com.acoustic.connect.android.demo.connect.external
+adb shell am start \
+    -n com.acoustic.connect.android.demo.connect.external/com.acoustic.connect.android.demo.connect.external.MainActivity \
+    --es connectProfile session-timeout-1m
+
+# Views app: the application id gains .xml, the activity class does not
+adb shell am force-stop com.acoustic.connect.android.demo.connect.external.xml
+adb shell am start \
+    -n com.acoustic.connect.android.demo.connect.external.xml/com.acoustic.connect.android.demo.connect.external.MainActivity \
+    --es connectProfile session-timeout-1m
+```
+
+| Profile | What the SDK runs with |
+|---|---|
+| `session-timeout-1m` | `SessionTimeout` of 1 minute instead of the bundled 30 |
+| `no-screenshots` | Layout capture without screenshots: `ScreenShot` is `false` in the layout config's `GlobalScreenSettings` |
+| `sdk-defaults` | The layout and masking config the SDK library bundles in its own `ConnectLayoutConfig.json`, in place of this app's (see [Configuration notes](#configuration-notes)): no `^SECRET-` or email-address value masks, and the library's `MainActivity` entry |
+
+- **No extra, or an empty one:** nothing changes; the app runs on the bundled configuration.
+- **An unknown name:** nothing is applied and nothing crashes.
+- **One profile per process:** the SDK reads its layout configuration once, so only the first launch
+  of a process counts. A later `am start` into a running process keeps the first profile.
+- **Where to read it:** the Behaviour tab shows `txt_connect_profile`: `Profile: <name>`,
+  `Profile: default` or `Profile: unknown <name>`.
+- **When it applies:** after `Connect.init` and before the SDK is enabled, with the SDK's public
+  `Connect.updateConfig`. The Compose app initialises the SDK itself for that, only for a profile that
+  exists; `ConnectWrapper` then initialises it again and keeps what was written.
+
+A profile is a file in `shared/src/main/assets/connect-profiles/<name>.json`, named in lower case,
+digits and hyphens. `set` replaces a key's value, `merge` changes only the leaves it names inside a
+key that holds a JSON object. Both name the SDK module first: `Tealeaf` is where the SDK keeps the
+settings of `ConnectBasicConfig.properties`, `ConnectAdvancedConfig.json` and
+`ConnectLayoutConfig.json`.
+
+```json
+{
+  "description": "Anything; ignored.",
+  "set":   { "Tealeaf": { "SessionTimeout": "1" } },
+  "merge": { "Tealeaf": { "AutoLayout": { "GlobalScreenSettings": { "ScreenShot": false } } } }
+}
+```
+
+`sdk-defaults.json` is a copy of the library's `ConnectLayoutConfig.json`. Refresh it when the SDK's
+bundled file changes.
 
 ## Push provider selection
 

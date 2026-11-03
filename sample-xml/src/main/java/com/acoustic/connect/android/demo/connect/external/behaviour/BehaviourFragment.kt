@@ -11,9 +11,11 @@ package com.acoustic.connect.android.demo.connect.external.behaviour
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.acoustic.connect.android.demo.connect.external.R
 import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
+import com.acoustic.connect.android.demo.connect.external.profile.ConnectProfiles
 import com.acoustic.connect.android.demo.connect.external.ui.ScreenFragment
 import com.acoustic.connect.android.demo.connect.external.shared.R as SharedR
 
@@ -31,6 +33,8 @@ class BehaviourFragment : ScreenFragment(R.layout.fragment_behaviour) {
     override val headerTitle get() = getString(SharedR.string.behaviour_header)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Before the screen logs its layout, so the profile line is in it.
+        view.findViewById<TextView>(R.id.txt_connect_profile).text = ConnectProfiles.label
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<View>(R.id.btn_open_showcase).setOnClickListener {
             findNavController().navigate(R.id.showcaseFragment)

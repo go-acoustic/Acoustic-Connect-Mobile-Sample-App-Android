@@ -16,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.acoustic.connect.android.connectmod.Connect
+import com.acoustic.connect.android.demo.connect.external.profile.ConnectProfiles
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -41,6 +42,9 @@ class MainActivity : AppCompatActivity() {
         val credentials = AcousticCredentials.load(this)
 
         Connect.init(application)
+        // A test's SDK config profile goes in after the init that loads the config and before the
+        // enable that starts using it.
+        ConnectProfiles.applyOnce(this, intent.getStringExtra(ConnectProfiles.EXTRA))
         Connect.enable(
             appKey = credentials.appKey,
             postMessageUrl = credentials.collectorUrl,

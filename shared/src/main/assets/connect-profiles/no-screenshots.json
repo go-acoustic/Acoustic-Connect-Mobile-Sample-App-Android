@@ -1,0 +1,12 @@
+{
+  "description": "Layout capture without screenshots: ScreenShot is false in the layout config's global screen settings, the only place the samples set it.",
+  "merge": {
+    "Tealeaf": {
+      "AutoLayout": {
+        "GlobalScreenSettings": {
+          "ScreenShot": false
+        }
+      }
+    }
+  }
+}

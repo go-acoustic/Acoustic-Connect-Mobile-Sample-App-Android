@@ -16,11 +16,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.navigation.compose.rememberNavController
+import com.acoustic.connect.android.connectmod.Connect
 import com.acoustic.connect.android.connectmod.composeui.ConnectComposeUI
 import com.acoustic.connect.android.connectmod.push.ConnectPushConfig
 import com.acoustic.connect.android.connectmod.push.constants.ConnectConstants
 import com.acoustic.connect.android.connectmod.push.core.MobileServiceType
 import com.acoustic.connect.android.demo.connect.external.notification.NotificationViewModel
+import com.acoustic.connect.android.demo.connect.external.profile.ConnectProfiles
 import com.acoustic.connect.android.demo.connect.external.ui.theme.ConnectApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,6 +34,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val credentials = AcousticCredentials.load(this)
+
+        // A test's SDK config profile has to be in place before the wrapper below enables the SDK
+        // from its first composition effect. Connect.init loads the config the profile writes to;
+        // the wrapper's own init later keeps what was written.
+        ConnectProfiles.applyOnce(this, intent.getStringExtra(ConnectProfiles.EXTRA)) {
+            Connect.init(application)
+        }
 
         setContent {
             ConnectApplicationTheme {

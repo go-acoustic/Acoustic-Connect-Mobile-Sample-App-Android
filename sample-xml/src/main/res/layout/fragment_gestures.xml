@@ -76,6 +76,7 @@
             android:layout_height="120dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
+            android:clickable="true"
             android:contentDescription="@string/gestures_pinch"
             android:src="@drawable/acoustic_logo_light" />
 

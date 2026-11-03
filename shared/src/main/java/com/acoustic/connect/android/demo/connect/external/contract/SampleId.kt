@@ -40,6 +40,8 @@ object SampleId {
     // Behaviour hub.
     const val BTN_OPEN_SHOWCASE = "btn_open_showcase"
     const val BTN_OPEN_VERIFICATION = "btn_open_verification"
+    /** `Profile: <name>`, `Profile: default` or `Profile: unknown <name>`: the SDK config profile the launch asked for. */
+    const val TXT_CONNECT_PROFILE = "txt_connect_profile"
 
     // Showcase.
     const val BTN_SHOWCASE_OPEN_DETAIL = "btn_showcase_open_detail"

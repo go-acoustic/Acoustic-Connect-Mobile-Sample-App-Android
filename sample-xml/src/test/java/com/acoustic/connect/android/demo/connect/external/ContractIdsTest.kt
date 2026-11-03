@@ -45,6 +45,7 @@ class ContractIdsTest {
         SampleId.BTN_SEND_ACCOUNT_REGISTERED_SIGNAL,
         SampleId.TXT_IDENTITY_RESULT,
         SampleId.BTN_OPEN_SHOWCASE,
+        SampleId.TXT_CONNECT_PROFILE,
         SampleId.BTN_SHOWCASE_OPEN_DETAIL,
         SampleId.BTN_SHOWCASE_TAP,
         SampleId.TXT_SHOWCASE_TAPS,

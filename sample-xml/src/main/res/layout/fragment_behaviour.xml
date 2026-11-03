@@ -6,6 +6,8 @@
 
         <include layout="@layout/view_logo_header" />
 
+        <TextView android:id="@+id/txt_connect_profile" style="@style/Demo.Text.Mono" />
+
         <com.google.android.material.card.MaterialCardView style="@style/Demo.Card">
             <LinearLayout style="@style/Demo.CardBody">
                 <TextView style="@style/Demo.Text.CardTitle" android:text="@string/behaviour_showcase_title" />

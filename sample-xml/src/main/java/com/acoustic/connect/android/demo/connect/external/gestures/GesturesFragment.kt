@@ -127,7 +127,11 @@ class GesturesFragment : ScreenFragment(R.layout.fragment_gestures) {
                     return true
                 }
             })
-        target.setOnTouchListener { _, event ->
+        target.setOnTouchListener { view, event ->
+            when (event.actionMasked) {
+                MotionEvent.ACTION_DOWN -> view.parent?.requestDisallowInterceptTouchEvent(true)
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> view.parent?.requestDisallowInterceptTouchEvent(false)
+            }
             detector.onTouchEvent(event)
             false
         }

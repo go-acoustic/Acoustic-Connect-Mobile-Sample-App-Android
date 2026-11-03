@@ -21,10 +21,12 @@ import com.acoustic.connect.android.connectmod.composeui.customcomposable.Logged
 import com.acoustic.connect.android.demo.connect.external.analytics.ScreenviewUnloadEffect
 import com.acoustic.connect.android.demo.connect.external.contract.SampleId
 import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
+import com.acoustic.connect.android.demo.connect.external.profile.ConnectProfiles
 import com.acoustic.connect.android.demo.connect.external.ui.components.BodyText
 import com.acoustic.connect.android.demo.connect.external.ui.components.DemoCard
 import com.acoustic.connect.android.demo.connect.external.ui.components.DemoScreen
 import com.acoustic.connect.android.demo.connect.external.ui.components.LogoHeader
+import com.acoustic.connect.android.demo.connect.external.ui.components.MonoText
 import com.acoustic.connect.android.demo.connect.external.ui.components.PrimaryButton
 import com.acoustic.connect.android.demo.connect.external.ui.components.SecondaryButton
 import com.acoustic.connect.android.demo.connect.external.ui.theme.DarkGrey
@@ -44,6 +46,8 @@ fun BehaviourScreen(onOpenShowcase: () -> Unit, onOpenVerification: () -> Unit) 
 
     DemoScreen {
         LogoHeader(title = stringResource(SharedR.string.behaviour_header))
+
+        MonoText(text = ConnectProfiles.label, tag = SampleId.TXT_CONNECT_PROFILE)
 
         DemoCard(title = stringResource(SharedR.string.behaviour_showcase_title)) {
             BodyText(stringResource(SharedR.string.behaviour_showcase_body))

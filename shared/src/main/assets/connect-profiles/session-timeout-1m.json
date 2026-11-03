@@ -1,0 +1,8 @@
+{
+  "description": "The SDK session ends after 1 minute without a message, instead of the bundled 30.",
+  "set": {
+    "Tealeaf": {
+      "SessionTimeout": "1"
+    }
+  }
+}
