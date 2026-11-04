@@ -111,6 +111,7 @@ object SampleId {
     const val BTN_OPEN_SCREEN_VIEWS = "btn_open_screen_views"
     const val BTN_SCREENVIEW_SEND_ALL = "btn_screenview_send_all"
     const val TXT_SCREENVIEW_RESULT = "txt_screenview_result"
+    const val BTN_SCREENVIEW_QUICK_VISIT = "btn_screenview_quick_visit"
     const val BTN_CASE_RELOG = "btn_case_relog"
     const val TXT_CASE_RELOG_RESULT = "txt_case_relog_result"
     const val BTN_CASE_PUSH_NEXT = "btn_case_push_next"

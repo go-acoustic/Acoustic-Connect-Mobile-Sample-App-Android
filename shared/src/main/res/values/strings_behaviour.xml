@@ -140,6 +140,8 @@
     <string name="screen_views_navigate_title">Navigate — real integration path</string>
     <string name="screen_views_repeat_note">Navigate back and re-enter to produce repeat views. A repeat of a name still waiting in the SDK\'s queue is dropped as a duplicate until the next post.</string>
     <string name="screen_views_logs">logs: %1$s</string>
+    <string name="screen_views_quick_visit">Quick visit: %1$s</string>
+    <string name="screen_views_quick_visit_body">Opens %1$s and goes back %2$d ms later, in code, faster than a test driver can tap. Both screens must log a LOAD, each naming the other as referrer.</string>
     <string name="screen_views_direct_title">Screen view — exact name</string>
     <string name="screen_views_direct_body">Emits a type-2 screenview whose logical page name is the exact string below. The server-side rule uses that name as the inferred pageView\'s url, so each name is a separate test of the fallback. The empty and null names are only reachable here — navigation cannot carry them.</string>
     <string name="screen_views_direct_android">On Android the SDK treats an empty or null name as no name at all and logs the activity\'s class name instead — MainActivity in this app — so neither arrives as sent. Sent back to back, as Send all does, the second is also dropped as a duplicate of the first while it waits in the queue, so the null line shows ✗.</string>

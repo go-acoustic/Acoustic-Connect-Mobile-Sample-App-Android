@@ -27,6 +27,9 @@ object ScreenViewActions {
     /** The referrer the exact-name card sends, as in the React Native and iOS samples. */
     const val DIRECT_REFERRER = "Screen View Diagnostics"
 
+    val QUICK_VISIT_CASE: ScreenViewCase = ScreenViewCases.NAV.first()
+    const val QUICK_VISIT_MS = 200L
+
     /** How many lines the exact-name card keeps, newest first. */
     const val LOG_LIMIT = 12
 

@@ -57,7 +57,7 @@ val routableScreenViewCases: List<ScreenViewCase> = ScreenViewCases.NAV.filter {
  * Compose app sends it. Mirrors the React Native sample's Screen Views screen.
  */
 @Composable
-fun ScreenViewsScreen(onOpenCase: (ScreenViewCase) -> Unit) {
+fun ScreenViewsScreen(onOpenCase: (ScreenViewCase) -> Unit, onQuickVisit: () -> Unit) {
     ScreenviewUnloadEffect(ScreenName.SCREEN_VIEWS)
 
     DemoScreen {
@@ -83,6 +83,17 @@ fun ScreenViewsScreen(onOpenCase: (ScreenViewCase) -> Unit) {
                     MonoText(stringResource(SharedR.string.screen_views_logs, describeName(case.name)))
                     if (!case.isRoutable) CaptionText(stringResource(R.string.screen_views_blank_route))
                 }
+            }
+            CaseBlock {
+                val quick = ScreenViewActions.QUICK_VISIT_CASE
+                SecondaryButton(
+                    title = stringResource(SharedR.string.screen_views_quick_visit, quick.label),
+                    tag = SampleId.BTN_SCREENVIEW_QUICK_VISIT,
+                    onClick = onQuickVisit,
+                )
+                CaptionText(
+                    stringResource(SharedR.string.screen_views_quick_visit_body, quick.label, ScreenViewActions.QUICK_VISIT_MS),
+                )
             }
         }
 

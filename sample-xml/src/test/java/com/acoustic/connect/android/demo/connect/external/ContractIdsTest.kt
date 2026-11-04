@@ -98,6 +98,7 @@ class ContractIdsTest {
         SampleId.BTN_OPEN_SCREEN_VIEWS,
         SampleId.BTN_SCREENVIEW_SEND_ALL,
         SampleId.TXT_SCREENVIEW_RESULT,
+        SampleId.BTN_SCREENVIEW_QUICK_VISIT,
         SampleId.BTN_CASE_RELOG,
         SampleId.TXT_CASE_RELOG_RESULT,
         SampleId.BTN_CASE_PUSH_NEXT,

@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
@@ -44,6 +45,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import com.acoustic.connect.android.demo.connect.external.appstate.AppStateScreen
 import com.acoustic.connect.android.demo.connect.external.behaviour.BehaviourScreen
+import com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewActions
 import com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewCaseScreen
 import com.acoustic.connect.android.demo.connect.external.behaviour.ScreenViewsScreen
 import com.acoustic.connect.android.demo.connect.external.behaviour.ShowcaseDetailScreen
@@ -63,6 +65,8 @@ import com.acoustic.connect.android.demo.connect.external.ui.theme.DarkGrey
 import com.acoustic.connect.android.demo.connect.external.ui.theme.Periwinkle
 import com.acoustic.connect.android.demo.connect.external.ui.theme.Violet
 import com.acoustic.connect.android.demo.connect.external.shared.R as SharedR
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * Route of the Behaviour tab's nested graph. A graph is never a destination itself, so this name
@@ -111,6 +115,7 @@ fun MainScreen(navController: NavHostController, notificationViewModel: Notifica
     val backStackEntry by navController.currentBackStackEntryAsState()
     val destination = backStackEntry?.destination
     val route = destination?.route
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         // Publishes every testTag below as a resource id, which is what Appium matches on.
@@ -188,7 +193,18 @@ fun MainScreen(navController: NavHostController, notificationViewModel: Notifica
                     WebViewPostScreen()
                 }
                 composable(ScreenName.SCREEN_VIEWS) {
-                    ScreenViewsScreen(onOpenCase = { case -> case.name?.let(navController::navigate) })
+                    ScreenViewsScreen(
+                        onOpenCase = { case -> case.name?.let(navController::navigate) },
+                        onQuickVisit = {
+                            ScreenViewActions.QUICK_VISIT_CASE.name?.let { caseRoute ->
+                                navController.navigate(caseRoute)
+                                scope.launch {
+                                    delay(ScreenViewActions.QUICK_VISIT_MS)
+                                    navController.popBackStack(caseRoute, inclusive = true)
+                                }
+                            }
+                        },
+                    )
                 }
                 // One destination per case, routed by the case's name: the SDK logs the route, so
                 // the route has to be the exact name under test.

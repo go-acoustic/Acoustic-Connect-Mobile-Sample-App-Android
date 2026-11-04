@@ -15,11 +15,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.acoustic.connect.android.demo.connect.external.R
 import com.acoustic.connect.android.demo.connect.external.contract.ScreenName
 import com.acoustic.connect.android.demo.connect.external.ui.ScreenFragment
 import com.acoustic.connect.android.demo.connect.external.shared.R as SharedR
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * The verification surface for the `pageView` signal the platform infers from every screen view.
@@ -47,6 +50,18 @@ class ScreenViewsFragment : ScreenFragment(R.layout.fragment_screen_views) {
             navigateList.addCase(inflater, ScreenViewButtons.navigate.getValue(case.id), case.label,
                 getString(SharedR.string.screen_views_logs, describeName(case.name)), mono = true) {
                 findNavController().navigate(R.id.screenViewCaseFragment, ScreenViewCaseFragment.args(case))
+            }
+        }
+        val quick = ScreenViewActions.QUICK_VISIT_CASE
+        navigateList.addCase(inflater, R.id.btn_screenview_quick_visit,
+            getString(SharedR.string.screen_views_quick_visit, quick.label),
+            getString(SharedR.string.screen_views_quick_visit_body, quick.label, ScreenViewActions.QUICK_VISIT_MS),
+            mono = false) {
+            val navController = findNavController()
+            navController.navigate(R.id.screenViewCaseFragment, ScreenViewCaseFragment.args(quick))
+            lifecycleScope.launch {
+                delay(ScreenViewActions.QUICK_VISIT_MS)
+                navController.popBackStack(R.id.screenViewCaseFragment, true)
             }
         }
 
