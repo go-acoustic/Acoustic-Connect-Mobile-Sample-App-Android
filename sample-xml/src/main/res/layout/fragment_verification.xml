@@ -195,6 +195,10 @@
                             android:inputType="textPassword"
                             android:text="@string/verification_rules_password" />
                     </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_mask_rules_reveal"
+                        style="@style/Demo.Button.Secondary"
+                        android:text="@string/verification_rules_reveal" />
                     <TextView style="@style/Demo.Text.Label" android:text="@string/verification_rules_typed_field" />
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Demo.Field"

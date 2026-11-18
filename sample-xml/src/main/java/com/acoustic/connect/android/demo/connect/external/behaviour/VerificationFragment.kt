@@ -10,7 +10,10 @@
 package com.acoustic.connect.android.demo.connect.external.behaviour
 
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import androidx.core.view.ViewCompat
 import androidx.navigation.fragment.findNavController
 import com.acoustic.connect.android.demo.connect.external.R
@@ -69,6 +72,14 @@ class VerificationFragment : ScreenFragment(R.layout.fragment_verification) {
             view.findViewById(R.id.a11y_value),
             getString(SharedR.string.verification_a11y_address),
         )
+
+        view.onClick(R.id.btn_mask_rules_reveal) {
+            val password = view.findViewById<EditText>(R.id.mask_rules_password)
+            val hidden = password.transformationMethod is PasswordTransformationMethod
+            password.transformationMethod = if (hidden) null else PasswordTransformationMethod.getInstance()
+            view.findViewById<Button>(R.id.btn_mask_rules_reveal)
+                .setText(if (hidden) SharedR.string.verification_rules_hide else SharedR.string.verification_rules_reveal)
+        }
 
         // The tap is the capture: its screenshot is what shows whether typed text is obscured.
         view.onClick(R.id.btn_mask_rules_send) {

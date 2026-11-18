@@ -94,6 +94,7 @@ object SampleId {
     const val MASK_RULES_CARD = "mask_rules_card"
     const val MASK_RULES_EMAIL_FIELD = "mask_rules_email_field"
     const val MASK_RULES_PASSWORD = "mask_rules_password"
+    const val BTN_MASK_RULES_REVEAL = "btn_mask_rules_reveal"
     const val MASK_RULES_TYPED = "mask_rules_typed"
     const val BTN_MASK_RULES_SEND = "btn_mask_rules_send"
     const val TXT_MASK_RULES_RESULT = "txt_mask_rules_result"

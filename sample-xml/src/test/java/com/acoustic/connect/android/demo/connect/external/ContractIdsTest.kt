@@ -87,6 +87,7 @@ class ContractIdsTest {
         SampleId.MASK_RULES_CARD,
         SampleId.MASK_RULES_EMAIL_FIELD,
         SampleId.MASK_RULES_PASSWORD,
+        SampleId.BTN_MASK_RULES_REVEAL,
         SampleId.MASK_RULES_TYPED,
         SampleId.BTN_MASK_RULES_SEND,
         SampleId.TXT_MASK_RULES_RESULT,

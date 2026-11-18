@@ -41,6 +41,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -230,6 +231,7 @@ fun DemoTextField(
     tag: String?,
     maskLabel: String? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardType: KeyboardType = KeyboardOptions.Default.keyboardType,
     onValueChange: (String) -> Unit,
 ) {
     LoggedOutlinedTextField(
@@ -240,7 +242,11 @@ fun DemoTextField(
         placeholder = { Text(placeholder) },
         singleLine = true,
         shape = RoundedCornerShape(10.dp),
-        keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.None, autoCorrect = false),
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.None,
+            autoCorrect = false,
+            keyboardType = keyboardType,
+        ),
         colors = OutlinedTextFieldDefaults.colors(
             unfocusedContainerColor = Color.White,
             focusedContainerColor = Color.White,

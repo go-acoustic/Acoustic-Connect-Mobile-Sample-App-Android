@@ -22,7 +22,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.acoustic.connect.android.connectmod.composeui.customcomposable.LoggedText
@@ -204,6 +206,7 @@ private fun MaskingRulesCard() {
     // Filled in from the start, so the layout captured when the screen opens carries the values.
     var email by rememberSaveable { mutableStateOf(address) }
     var password by rememberSaveable { mutableStateOf(savedPassword) }
+    var revealed by rememberSaveable { mutableStateOf(false) }
     var typed by rememberSaveable { mutableStateOf("") }
     var sent by rememberSaveable { mutableStateOf(false) }
     ScenarioCard(Scenarios.MASKING_VALUE_ID_RULES) {
@@ -239,8 +242,14 @@ private fun MaskingRulesCard() {
             value = password,
             tag = SampleId.MASK_RULES_PASSWORD,
             maskLabel = stringResource(SharedR.string.verification_rules_password_field),
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (revealed) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardType = KeyboardType.Password,
             onValueChange = { password = it },
+        )
+        SecondaryButton(
+            title = stringResource(if (revealed) SharedR.string.verification_rules_hide else SharedR.string.verification_rules_reveal),
+            tag = SampleId.BTN_MASK_RULES_REVEAL,
+            onClick = { revealed = !revealed },
         )
         DemoTextField(
             label = stringResource(SharedR.string.verification_rules_typed_field),
